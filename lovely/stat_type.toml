@@ -1,0 +1,55 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if self.ability.set == 'Joker' and not self.sticker_run then'''
+position = "before"
+payload = '''
+if self.ability.set == "Voucher" and not self.sticker_run then
+    self.sticker_run = get_voucher_win_sticker(self.config.center) or 'NONE'
+end'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''set_joker_win()'''
+position = "after"
+payload = '''set_voucher_win()'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''elseif _c.set == 'Voucher' then'''
+position = "after"
+payload = '''
+if specific_vars and specific_vars.sticker then 
+    if G.localization.descriptions.Other['voucher_'..string.lower(specific_vars.sticker)..'_sticker'] then
+        info_queue[#info_queue+1] = {key = 'voucher_'..string.lower(specific_vars.sticker)..'_sticker', set = 'Other'}
+    else
+        info_queue[#info_queue+1] = {key = string.lower(specific_vars.sticker)..'_sticker', set = 'Other'}
+    end
+end'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''card.ability.order = i+(j-1)*4'''
+position = "after"
+payload = '''card.sticker = get_voucher_win_sticker(center)'''
+match_indent = true
+
+# This patch is so bad but forced if I don't want to override the whole function
+[[patches]]
+[patches.regex]
+target = "functions/button_callbacks.lua"
+pattern = '''(?<indent>[\t ]*)local center = voucher_pool\[i\+\(j-1\)\*4 \+ \(8\*\(args\.cycle_config\.current_option - 1\)\)\]\n[\s\S]{160}G\.P_CARDS\.empty, center\)\n'''
+position = "after"
+payload = '''card.sticker = get_voucher_win_sticker(center)'''
+match_indent = true

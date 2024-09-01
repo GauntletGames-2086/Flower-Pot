@@ -1,0 +1,45 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+## SMODS compat for ConsumableTypes
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''boot_timer('prep stage', 'splash prep',1)'''
+position = "before"
+payload = '''
+if SMODS and SMODS.ConsumableTypes then 
+	for i, v in ipairs(SMODS.ConsumableType.ctype_buffer) do
+		if not FlowerPot.stat_groups[(v):lower():gsub("%s+", "_").."_usage"] then
+			FlowerPot.stat_types["times_used"].valid_stat_groups[(v):lower():gsub("%s+", "_").."_usage"] = true
+			FlowerPot.addStatGroup({
+				key = (v):lower():gsub("%s+", "_").."_usage",
+				folder_dir = {"Cards"},
+				file_name = (v):lower():gsub("%s+", "_").."_usage",
+				stat_set = v,
+				create_data_table = function(self, format)
+					local card_type_stats = G.PROFILES[G.SETTINGS.profile]["consumeable_usage"]
+
+					if next(card_type_stats) then
+						local data_table = {}
+
+						for k, v in pairs(card_type_stats) do
+							if G.P_CENTERS[k] and (not self.stat_set or G.P_CENTERS[k].set == self.stat_set) then
+								data_table[#data_table+1] = {key = k, name = localize{type = 'name_text', key = k, set = self.stat_set}, count = v.count}
+							end
+						end
+						table.sort(data_table, function (a, b) return a.count > b.count end )
+
+						return data_table
+					end
+				end,
+				compat = {
+					CSV = {titles = {v, "Times Used"}}
+				}
+			})
+		end
+	end
+end'''
+match_indent = true

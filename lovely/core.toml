@@ -1,0 +1,33 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+[[patches]]
+[patches.module]
+source = "nativefs.lua"
+before = "main.lua"
+name = "FP_nativefs"
+
+[[patches]]
+[patches.module]
+source = "json.lua"
+before = "main.lua"
+name = "FP_json"
+
+[[patches]]
+[patches.copy]
+target = "main.lua"
+position = "append"
+sources = [
+	"core/core.lua",
+]
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = 'init_localization()'
+position = "before"
+payload = '''
+if not (SMODS and SMODS.can_load) then FlowerPot.load_localization() end'''
+match_indent = true
