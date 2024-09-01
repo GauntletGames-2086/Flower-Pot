@@ -9,3 +9,5 @@
 SMODS.current_mod.config_tab = function()
     return FlowerPot.config_tab()
 end
+
+SMODS.Atlas{key = "modicon", atlas_table = "ASSET_ATLAS", px = 34, py = 34, path = "modicon.png"}
