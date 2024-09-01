@@ -49,7 +49,6 @@ match_indent = true
 [[patches]]
 [patches.regex]
 target = "functions/button_callbacks.lua"
-pattern = '''(?<indent>[\t ]*)local center = voucher_pool\[i\+\(j-1\)\*4 \+ \(8\*\(args\.cycle_config\.current_option - 1\)\)\]\n[\s\S]{160}G\.P_CARDS\.empty, center\)\n'''
+pattern = '''(?<indent>[\t ]*)voucher_pool\[i\+\(j-1\)\*4 \+ \(8\*\(args\.cycle_config\.current_option - 1\)\)\]\n[\s\S]{6}if not center then break end\n[\s\S]{6}local card = Card\(G\.your_collection\[j\]\.T\.x \+ G\.your_collection\[j\]\.T\.w\/2, G\.your_collection\[j\]\.T\.y, G\.CARD_W, G\.CARD_H, G\.P_CARDS\.empty, center\)'''
 position = "after"
 payload = '''card.sticker = get_voucher_win_sticker(center)'''
-match_indent = true
