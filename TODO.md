@@ -25,4 +25,4 @@
         - [ ] Add Voucher discovery to it
         - [ ] Move to button/tab
     - [ ] Additions
-        - [] Records (?). Displays stats for specific object attributed to records (e.x. scaling jokers would have "Highest Chips/Mult/XMult"). 
+        - [ ] Records (?). Displays stats for specific object attributed to records (e.x. scaling jokers would have "Highest Chips/Mult/XMult"). 
