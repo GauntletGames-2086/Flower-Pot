@@ -277,7 +277,7 @@ end
 function set_voucher_win()
     for k, v in pairs(G.GAME.used_vouchers) do
         if G.P_CENTERS[k] then
-            G.PROFILES[G.SETTINGS.profile].voucher_usage[k] = G.PROFILES[G.SETTINGS.profile].voucher_usage[k] or {count = 1, order = card.config.center.order, wins = {}}
+            G.PROFILES[G.SETTINGS.profile].voucher_usage[k] = G.PROFILES[G.SETTINGS.profile].voucher_usage[k] or {count = 1, order = v.config.center.order, wins = {}}
             if G.PROFILES[G.SETTINGS.profile].voucher_usage[k] then
                 G.PROFILES[G.SETTINGS.profile].voucher_usage[k].wins = G.PROFILES[G.SETTINGS.profile].voucher_usage[k].wins or {}
                 G.PROFILES[G.SETTINGS.profile].voucher_usage[k].wins[G.GAME.stake] = (G.PROFILES[G.SETTINGS.profile].voucher_usage[k].wins[G.GAME.stake] or 0) + 1
