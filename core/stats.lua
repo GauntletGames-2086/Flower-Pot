@@ -249,7 +249,7 @@ function get_voucher_win_sticker(_center, index)
             local applied = {}
             local _count = 0
             local _stake = nil
-            for k, v in pairs(voucher_usage.wins_by_key) do
+            for k, v in pairs(voucher_usage.wins_by_key or {}) do
                 SMODS.build_stake_chain(G.P_STAKES[k], applied)
             end
             for i, v in ipairs(G.P_CENTER_POOLS.Stake) do
@@ -264,7 +264,7 @@ function get_voucher_win_sticker(_center, index)
             if _count > 0 then return G.sticker_map[_stake] end
         else
             local _stake = 0
-            for k, v in pairs(G.PROFILES[G.SETTINGS.profile].voucher_usage[_center.key].wins) do
+            for k, v in pairs(G.PROFILES[G.SETTINGS.profile].voucher_usage[_center.key].wins or {}) do
                 _stake = math.max(k, _stake)
             end
             if index then return _stake end
