@@ -1,6 +1,4 @@
-FP_NFS = require("FP_nativefs")
-FP_JSON = require("FP_json")
-
+-- Needed for earlier portions of the code
 FlowerPot.addStatType({
     key = "times_used",
     display_txt = {
@@ -13,8 +11,12 @@ FlowerPot.addStatType({
     end,
 })
 
-for i, v in ipairs({{set = "Joker", key = "joker_usage"}, {set = "Voucher", key = "voucher_usage"}, 
-    {set = "Tarot", key = "tarot_usage", profile_key = "consumeable_usage"}, {set = "Planet", key = "planet_usage", profile_key = "consumeable_usage"}, 
+-- Stat Groups
+for i, v in ipairs({
+    {set = "Joker", key = "joker_usage"}, 
+    {set = "Voucher", key = "voucher_usage"}, 
+    {set = "Tarot", key = "tarot_usage", profile_key = "consumeable_usage"}, 
+    {set = "Planet", key = "planet_usage", profile_key = "consumeable_usage"}, 
     {set = "Spectral", key = "spectral_usage", profile_key = "consumeable_usage"}}) do
     if v.profile_key and v.profile_key == "consumeable_usage" then FlowerPot.stat_types["times_used"].valid_stat_groups[v.key] = true end
     FlowerPot.addStatGroup({
@@ -91,7 +93,6 @@ FlowerPot.addStatGroup({
         }
     }
 })
-
 FlowerPot.addStatGroup({
     key = "poker_hands",
     folder_dir = {"Poker Hands"},
@@ -118,6 +119,7 @@ FlowerPot.addStatGroup({
     }
 })
 
+-- Stat Types
 FlowerPot.addStatType({
     key = "round_wins",
     display_txt = {
@@ -156,11 +158,11 @@ FlowerPot.addStatType({
     end,
 })
 
+-- Formats
 FlowerPot.addFormat({
     key = "CSV",
     compat_req = {["titles"] = true, ["data_order"] = true},
     write_file = function(self, data_table, stat_group, file_type_path)
-        print("we're here")
         local titles = stat_group.compat.CSV.titles
         local data_order = stat_group.compat.CSV.data_order
         if #titles == 0 then
@@ -270,22 +272,7 @@ function FlowerPot.data_to_csv(str_array, delim)
     return final_str
 end
 
-G.FUNCS.create_profile_stat_files = function(e)
-    print("Flower Pot | Creating Profile Stat Files")
-    fetch_achievements()
-    set_profile_progress()
-    set_discover_tallies()
-
-    local profile_folder = FlowerPot.path_to_stats()..G.PROFILES[G.SETTINGS.profile].name.."/"
-    FlowerPot.create_profile_folders(G.PROFILES[G.SETTINGS.profile].name)
-
-    for _, v in pairs(FlowerPot.stat_groups) do
-        FlowerPot.create_stat_files(v, profile_folder)
-    end
-
-    FlowerPot.create_complete_profile(profile_folder)
-end
-
+-- Voucher Win Tracking
 function get_voucher_win_sticker(_center, index)
     local voucher_usage = G.PROFILES[G.SETTINGS.profile].voucher_usage[_center.key] or {}
     if voucher_usage.wins then 
@@ -343,6 +330,7 @@ function set_voucher_win()
     G:save_settings()
 end
 
+-- Poker Hand Level Tracking
 local level_up_hand_ref = level_up_hand
 function level_up_hand(card, hand, instant, amount)
     level_up_hand_ref(card, hand, instant, amount)

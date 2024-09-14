@@ -1,5 +1,3 @@
-FP_NFS = require("FP_nativefs")
-
 for _, path in ipairs {
   "core/ui/stats_menu.lua",
   "core/ui/card_stats.lua",

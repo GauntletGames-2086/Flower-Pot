@@ -35,7 +35,7 @@ function FlowerPot.addStatGroup(stat_group)
 end
 
 -- "key": REQUIRED. Used when indexing FlowerPot.stat_tab
--- "tab_definition": REQUIRED. Function that returns the tab definition used
+-- "tab_definition": REQUIRED. Function that returns the tab UI
 function FlowerPot.addStatTab(stat_tab)
     for i, v in ipairs({"key", "tab_definition"}) do
         if not stat_group[v] then error(("Flower Pot | Registered stat tab does not have required param \"%s\""):format(v)) end
@@ -47,7 +47,7 @@ end
 
 -- "key": REQUIRED. Used when indexing FlowerPot.formats
 -- "write_file": REQUIRED. Function to write the stat group file
--- "decode_file": OPTIONAL. Function to decode file
+-- "decode_file": OPTIONAL. Function to decode file (not always needed)
 -- "write_profile": OPTIONAL. function to write the full stats profile
 -- "compat_req": OPTIONAL. Some formats require extra information to save, and this will restrict stat groups to only those meeting the requirements
 function FlowerPot.addFormat(format)

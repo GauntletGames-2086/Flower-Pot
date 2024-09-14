@@ -1,6 +1,3 @@
-local FP_FP_NFS = require("FP_nativefs")
-FP_JSON = require("FP_json")
-
 -- Copy of SMODS.handle_loc_file so loc files can still be loaded
 function FlowerPot.load_localization()
     local dir = FlowerPot.path_to_self() .. 'localization/'
@@ -56,7 +53,8 @@ G.FUNCS.FlowerPot_Menu = function(e)
                     return FlowerPot.config_tab()
                 end
             },
-        }})
+        }
+    })
     G.FUNCS.overlay_menu{
         definition = create_UIBox_generic_options({
             back_func = "options",
@@ -82,4 +80,20 @@ function FlowerPot.config_tab()
             UIBox_button({label = {localize("b_flowpot_create_profile_stats")}, button = "create_profile_stat_files", colour = G.C.ORANGE, minw = 5, minh = 0.7, scale = 0.6}),
         },
     }
+end
+
+G.FUNCS.create_profile_stat_files = function(e)
+    print("Flower Pot | Creating Profile Stat Files")
+    fetch_achievements()
+    set_profile_progress()
+    set_discover_tallies()
+
+    local profile_folder = FlowerPot.path_to_stats()..G.PROFILES[G.SETTINGS.profile].name.."/"
+    FlowerPot.create_profile_folders(G.PROFILES[G.SETTINGS.profile].name)
+
+    for _, v in pairs(FlowerPot.stat_groups) do
+        FlowerPot.create_stat_files(v, profile_folder)
+    end
+
+    FlowerPot.create_complete_profile(profile_folder)
 end
