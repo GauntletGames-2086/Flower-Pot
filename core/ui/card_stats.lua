@@ -1,7 +1,6 @@
-FP_NFS = require("FP_nativefs")
-
 -- Card usage stats
 function G.UIDEF.usage_tabs()
+  FlowerPot.convert_save_data()
   local stat_tabs = {
     {
       label = localize('b_stat_jokers'),
@@ -27,9 +26,12 @@ function G.UIDEF.usage_tabs()
 
   return create_UIBox_generic_options({back_func = 'high_scores', contents ={create_tabs({
       tabs = stat_tabs,
-      tab_h = 8,
+      padding = 0,
+      text_scale = 0.45,
+      scale = 0.85,
       snap_to_nav = true
-  })}})
+    })
+  }})
 end
 
 FlowerPot.GLOBAL.CARD_STATS_FILTER = {}
@@ -59,7 +61,7 @@ function buildCardStats_histogram(args)
       local data_table = FlowerPot.stat_types[stat_type]:create_stat_table(v)
       if data_table.count > 0 then 
         used_cards[#used_cards+1] = data_table
-        if v.count > max_amt then max_amt = v.count end
+        if data_table.count > max_amt then max_amt = data_table.count end
       end
     end
   end
@@ -134,6 +136,7 @@ end
 G.FUNCS.card_stats_histogram_page = function(args)
   if not args or not args.cycle_config then return end
   local histogram_uibox = G.OVERLAY_MENU:get_UIE_by_ID('histogram')
+  local tab_contents = G.OVERLAY_MENU:get_UIE_by_ID('tab_contents')
 
 	histogram_uibox.config.object:remove()
 	histogram_uibox.config.object = UIBox{

@@ -1,7 +1,9 @@
 return {
     misc = {
         dictionary = {
+            b_flowpot_config = "Flower Pot Settings",
             b_flowpot_create_profile_stats = "Create Profile Stat Files",
+            b_flowpot_poker_hand_stats = "Poker Hand Stats",
             b_flowpot_stat_types = "Stat Types",
             b_flowpot_consumable_types = "Consumable Types",
             b_flowpot_mods = "Mods",
@@ -15,6 +17,8 @@ return {
             b_flowpot_times_redeemed_expand = "Times this Voucher has been redeemed",
             b_flowpot_all_cards = "All Cards",
             b_flowpot_all_types = "All Types",
+            b_flowpot_highest_lvl = "Highest lvl:",
+            b_flowpot_total_played = "Total Played:",
         },
     },
     descriptions = {

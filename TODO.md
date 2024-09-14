@@ -1,6 +1,4 @@
 # TODO List
-- Other
-    - [ ] Find better route to save/load stats through
 - Stats collection. 
     - [x] Basic collection of purchased\used Jokers, Consumables, and Vouchers in .csv and .json format
     - [x] Complete profile stats
@@ -8,21 +6,31 @@
     - [x] Support for modded objects (e.x. SMODS.ConsumableType)
     - [ ] Additional stats not normally tracked by Balatro
         - [x] Voucher stake wins
+        - [x] Poker hand highest levels
         - Add more here (there's gotta be more stats to track)
 - Stats UI overhaul
-    - [ ] Overall
-        - Displays simplified information of the other tabs/buttons
-    - [ ] Card Usage stats
+    - Overall
+    - Card Usage stats
         - [x] Joker/Consumables/Vouchers
         - [x] Additional stats (stake wins)
         - [ ] Stat Tabs API for custom objects
-            - [x] Custom Histogram master (e.x. Joker/Consumable/Voucher tab)
-            - [ ] Custom histogram settings (e.x. "Consumable Type" settings tab in)
-        - [ ] UI Cleanup
-    - [ ] Poker Hand stats
-        - Replaces "Most Used Poker Hand" with a button/tab that lists all poker hands and displays most played + highest level
-    - [ ] Progress
+            - [x] Custom Histogram master tabs (e.x. Joker/Consumable/Voucher)
+            - [ ] Custom histogram settings tabs (e.x. "Consumable Type")
+        - [ ] UI Polish
+            - [] Consistent height/width when histograms are not filled
+    - Poker Hand stats
+        - Button that lists all poker hands and displays most played + highest level
+        - [x] Initial
+        - [ ] UI Polish
+            - Make formatting look better
+    - Progress
         - [ ] Add Voucher discovery to it
-        - [ ] Move to button/tab
-    - [ ] Additions
-        - [ ] Records (?). Displays stats for specific object attributed to records (e.x. scaling jokers would have "Highest Chips/Mult/XMult"). 
+        - [ ] Move to button? Add specific information for what's missing? 
+    - Records
+        - Displays stats for specific object attributed to records (e.x. scaling jokers would have "Highest Chips/Mult/XMult")
+        - [ ] Initial
+        - [ ] API for custom records
+        - [ ] Leaderboard? Have to ask mod dev behind Sessions about the details if I decide it should exist.
+    - Run Stats
+        - Tracks previous runs and displays information about them (like Ankh Replay stats but more)
+        - [ ] Initial

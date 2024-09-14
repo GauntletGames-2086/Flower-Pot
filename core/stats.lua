@@ -1,5 +1,5 @@
-local FP_NFS = require("FP_nativefs")
-local FP_JSON = require("FP_json")
+FP_NFS = require("FP_nativefs")
+FP_JSON = require("FP_json")
 
 FlowerPot.addStatType({
     key = "times_used",
@@ -34,13 +34,18 @@ for i, v in ipairs({{set = "Joker", key = "joker_usage"}, {set = "Voucher", key 
                         card_table["key"] = k
                         card_table["name"] = localize{type = 'name_text', key = k, set = self.stat_set}
                         -- Reconstruct wins as total_wins to not crash from saving as JSON
-                        if format and format == "JSON" then
-                            card_table.total_wins = 0
+                        card_table.total_wins = 0
+                        if SMODS and SMODS.can_load then
+                            for _, vvv in pairs(card_table.wins_by_key or {}) do
+                                card_table.total_wins = card_table.total_wins + vvv
+                            end
+                        else
                             for _, vvv in ipairs(card_table.wins or {}) do
                                 card_table.total_wins = card_table.total_wins + vvv
                             end
-                            card_table.wins = nil 
                         end
+                        card_table.wins = nil
+                        card_table.wins_by_key = nil
                         data_table[#data_table+1] = card_table
                     end
                 end
@@ -50,7 +55,10 @@ for i, v in ipairs({{set = "Joker", key = "joker_usage"}, {set = "Voucher", key 
             end
         end,
         compat = {
-            CSV = {titles = {v.set, ("Times %s"):format(v.profile_key and "Used" or "Bought")}}
+            CSV = {
+                titles = {v.set, ("Times %s"):format(v.profile_key and "Used" or "Bought")},
+                data_order = {"name", "count"},
+            }
         }
     })
 end
@@ -77,7 +85,36 @@ FlowerPot.addStatGroup({
         end
     end,
     compat = {
-        CSV = {titles = {"Consumable", "Times Used"}}
+        CSV = {
+            titles = {"Consumable", "Times Used"},
+            data_order = {"name", "count"},
+        }
+    }
+})
+
+FlowerPot.addStatGroup({
+    key = "poker_hands",
+    folder_dir = {"Poker Hands"},
+    file_name = "poker_hands",
+    create_data_table = function(self, format)
+        local poker_hand_stats = G.PROFILES[G.SETTINGS.profile].hand_usage
+
+        if next(poker_hand_stats) then
+            local data_table = {}
+
+            for k, v in pairs(poker_hand_stats) do
+                data_table[#data_table+1] = {key = v.order, name = localize(v.order,'poker_hands'), count = v.count or 0, level = v.level or 1}
+            end
+            table.sort(data_table, function (a, b) return a.count > b.count end )
+        
+            return data_table
+        end
+    end,
+    compat = {
+        CSV = {
+            titles = {"Poker Hand", "Total Played", "Highest lvl"},
+            data_order = {"name", "count", "level"},
+        }
     }
 })
 
@@ -121,9 +158,11 @@ FlowerPot.addStatType({
 
 FlowerPot.addFormat({
     key = "CSV",
-    compat_req = {["titles"] = true},
+    compat_req = {["titles"] = true, ["data_order"] = true},
     write_file = function(self, data_table, stat_group, file_type_path)
+        print("we're here")
         local titles = stat_group.compat.CSV.titles
+        local data_order = stat_group.compat.CSV.data_order
         if #titles == 0 then
             for k, v in pairs(data_table[1]) do
                 titles[#titles+1] = k
@@ -131,7 +170,11 @@ FlowerPot.addFormat({
         end
         local csv_data = ""..FlowerPot.data_to_csv(titles, ",").."\r\n"
         for i = 1, #data_table do
-            csv_data = csv_data..FlowerPot.data_to_csv(data_table[i], ",").."\r\n"
+            local data_to_convert = {}
+            for _, v in ipairs(data_order) do
+                data_to_convert[#data_to_convert+1] = data_table[i][v]
+            end
+            csv_data = csv_data..FlowerPot.data_to_csv(data_to_convert, ",").."\r\n"
         end
         assert(FP_NFS.write(file_type_path..stat_group.file_name..".csv", csv_data))
     end,
@@ -166,7 +209,7 @@ FlowerPot.addFormat({
 })
 
 function FlowerPot.create_profile_folders(profile_name)
-    local path_to_profile = FlowerPot.path_to_stats..profile_name.."/"
+    local path_to_profile = FlowerPot.path_to_stats()..profile_name.."/"
     FP_NFS.createDirectory(path_to_profile)
 
     for k, v in pairs(FlowerPot.formats) do
@@ -210,17 +253,18 @@ function FlowerPot.create_complete_profile(profile_folder)
 end
 
 function FlowerPot.check_format_compat(stat_group, format)
-    if not format.compat_req then return true end
-    for k, v in pairs(stat_group.compat[format.key]) do
+    if not format.compat_req then return true end --format has no compat req
+    if not stat_group.compat then return false end --stat group does not have compat
+    for k, v in pairs(stat_group.compat[format.key] or {}) do
         if not format.compat_req[k] then return false end
     end
     return true
 end
 
 function FlowerPot.data_to_csv(str_array, delim)
-    assert(type(str_array) == "table", "Flower Pot: Passing non-table as \"str_array\" in \"strs_to_csv\" function")
+    assert(type(str_array) == "table", "Flower Pot: Passing non-table as \"str_array\" in \"data_to_csv\" function")
     local final_str = ""
-    for _, v in pairs(str_array) do
+    for _, v in ipairs(str_array) do
         if type(v) == "string" or type(v) == "number" then final_str = final_str..tostring(v)..delim end
     end
     return final_str
@@ -232,7 +276,7 @@ G.FUNCS.create_profile_stat_files = function(e)
     set_profile_progress()
     set_discover_tallies()
 
-    local profile_folder = FlowerPot.path_to_stats..G.PROFILES[G.SETTINGS.profile].name.."/"
+    local profile_folder = FlowerPot.path_to_stats()..G.PROFILES[G.SETTINGS.profile].name.."/"
     FlowerPot.create_profile_folders(G.PROFILES[G.SETTINGS.profile].name)
 
     for _, v in pairs(FlowerPot.stat_groups) do
@@ -277,11 +321,43 @@ end
 function set_voucher_win()
     for k, v in pairs(G.GAME.used_vouchers) do
         if G.P_CENTERS[k] then
-            G.PROFILES[G.SETTINGS.profile].voucher_usage[k] = G.PROFILES[G.SETTINGS.profile].voucher_usage[k] or {count = 1, order = G.P_CENTERS[k].order, wins = {}}
-            if G.PROFILES[G.SETTINGS.profile].voucher_usage[k] then
-                G.PROFILES[G.SETTINGS.profile].voucher_usage[k].wins = G.PROFILES[G.SETTINGS.profile].voucher_usage[k].wins or {}
-                G.PROFILES[G.SETTINGS.profile].voucher_usage[k].wins[G.GAME.stake] = (G.PROFILES[G.SETTINGS.profile].voucher_usage[k].wins[G.GAME.stake] or 0) + 1
+            G.PROFILES[G.SETTINGS.profile].voucher_usage[k] = G.PROFILES[G.SETTINGS.profile].voucher_usage[k] or {count = 1, order = G.P_CENTERS[k].order, wins = {}, wins_by_key = {}}
+            local voucher = G.PROFILES[G.SETTINGS.profile].voucher_usage[k]
+            if voucher then
+                voucher.wins = voucher.wins or {}
+                voucher.wins[G.GAME.stake] = (voucher.wins[G.GAME.stake] or 0) + 1
+                if SMODS and SMODS.can_load then
+                    voucher.wins_by_key = voucher.wins_by_key or {}
+                    voucher.wins_by_key[SMODS.stake_from_index(G.GAME.stake)] = (voucher.wins_by_key[SMODS.stake_from_index(G.GAME.stake)] or 0) + 1
+                    local applied = SMODS.build_stake_chain(G.P_STAKES[SMODS.stake_from_index(G.GAME.stake)]) or {}
+                    for i, v in ipairs(G.P_CENTER_POOLS.Stake) do
+                        if applied[i] then
+                            voucher.wins[i] = math.max(voucher.wins[i] or 0, 1)
+                            voucher.wins_by_key[SMODS.stake_from_index(i)] = math.max(voucher.wins_by_key[SMODS.stake_from_index(i)] or 0, 1)
+                        end
+                    end
+                end
             end
+        end
+    end
+    G:save_settings()
+end
+
+local level_up_hand_ref = level_up_hand
+function level_up_hand(card, hand, instant, amount)
+    level_up_hand_ref(card, hand, instant, amount)
+    local poker_hand_key = hand
+    local poker_hand_label = poker_hand_key:gsub("%s+", "")
+    if G.PROFILES[G.SETTINGS.profile].hand_usage[poker_hand_label] == nil then
+        G.PROFILES[G.SETTINGS.profile].hand_usage[poker_hand_label] = {count = 0, order = poker_hand_label, level = 1}
+    end
+    if not G.PROFILES[G.SETTINGS.profile].hand_usage[poker_hand_label].level then
+        G.PROFILES[G.SETTINGS.profile].hand_usage[poker_hand_label].level = 1
+    end
+    local function is_inf(x) return x ~= x end
+    if not (G.GAME.hands[hand].level == math.huge and is_inf(G.GAME.hands[hand].level or 1) == true) then --don't save numbers that are NaN or naneinf
+        if G.PROFILES[G.SETTINGS.profile].hand_usage[poker_hand_label].level < G.GAME.hands[hand].level then 
+            G.PROFILES[G.SETTINGS.profile].hand_usage[poker_hand_label].level = G.GAME.hands[hand].level
         end
     end
     G:save_settings()
@@ -290,19 +366,22 @@ end
 local init_item_prototypes_ref = Game.init_item_prototypes
 function Game:init_item_prototypes()
     init_item_prototypes_ref(self)
-    if SMODS and SMODS.can_load then
-        FlowerPot.convert_save_data()
-    end
+    FlowerPot.convert_save_data()
 end
 
 function FlowerPot.convert_save_data()
-    for k, v in pairs(G.PROFILES[G.SETTINGS.profile].voucher_usage) do
-        local first_pass = not v.wins_by_key and not v.losses_by_key
-        v.wins_by_key = v.wins_by_key or {}
-        for index, number in pairs(v.wins or {}) do
-            if index > 8 and not first_pass then break end
-            v.wins_by_key[SMODS.stake_from_index(index)] = number
+    if SMODS and SMODS.can_load then
+        for k, v in pairs(G.PROFILES[G.SETTINGS.profile].voucher_usage) do
+            local first_pass = not v.wins_by_key
+            v.wins_by_key = v.wins_by_key or {}
+            for index, number in pairs(v.wins or {}) do
+                if index > 8 and not first_pass then break end
+                v.wins_by_key[SMODS.stake_from_index(index)] = number
+            end
         end
+    end
+    for k, v in pairs(G.PROFILES[G.SETTINGS.profile].hand_usage) do
+        if not v.level then G.PROFILES[G.SETTINGS.profile].hand_usage[k].level = 1 end
     end
     G:save_settings()
 end

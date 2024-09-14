@@ -20,7 +20,7 @@ if SMODS and SMODS.ConsumableTypes then
 				file_name = (v):lower():gsub("%s+", "_").."_usage",
 				stat_set = v,
 				create_data_table = function(self, format)
-					local card_type_stats = G.PROFILES[G.SETTINGS.profile]["consumeable_usage"]
+					local card_type_stats = copy_table(G.PROFILES[G.SETTINGS.profile]["consumeable_usage"])
 
 					if next(card_type_stats) then
 						local data_table = {}
@@ -36,7 +36,10 @@ if SMODS and SMODS.ConsumableTypes then
 					end
 				end,
 				compat = {
-					CSV = {titles = {v, "Times Used"}}
+					CSV = {
+						titles = {v, "Times Used"},
+						data_order = {"name", "count"},
+					}
 				}
 			})
 		end

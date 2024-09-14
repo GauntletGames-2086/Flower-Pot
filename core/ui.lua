@@ -1,7 +1,10 @@
-local FP_NFS = require("FP_nativefs")
+FP_NFS = require("FP_nativefs")
 
 for _, path in ipairs {
+  "core/ui/stats_menu.lua",
   "core/ui/card_stats.lua",
+  "core/ui/poker_hands.lua",
+  "core/ui/records.lua",
 } do
-	assert(load(FP_NFS.read(FlowerPot.path_to_self..path), ('=[FlowerPot-UI _ "%s"]'):format(path)))()
+	assert(load(FP_NFS.read(FlowerPot.path_to_self()..path), ('=[FlowerPot-UI _ "%s"]'):format(path)))()
 end
