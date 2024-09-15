@@ -32,13 +32,15 @@ end
 local createOptionsRef = create_UIBox_options
 function create_UIBox_options()
     local contents = createOptionsRef()
-    local m = UIBox_button({
-        minw = 5,
-        button = "FlowerPot_Menu",
-        label = {localize{type = 'name_text', key = "j_flower_pot", set = "Joker"}},
-        colour = G.C.SO_1.Clubs,
-    })
-    table.insert(contents.nodes[1].nodes[1].nodes[1].nodes, #contents.nodes[1].nodes[1].nodes[1].nodes + 1, m)
+    if G.STAGE == G.STAGES.MAIN_MENU then
+        local m = UIBox_button({
+            minw = 5,
+            button = "FlowerPot_Menu",
+            label = {localize{type = 'name_text', key = "j_flower_pot", set = "Joker"}},
+            colour = G.C.SO_1.Clubs,
+        })
+        table.insert(contents.nodes[1].nodes[1].nodes[1].nodes, #contents.nodes[1].nodes[1].nodes[1].nodes + 1, m)
+    end
     return contents
 end
 

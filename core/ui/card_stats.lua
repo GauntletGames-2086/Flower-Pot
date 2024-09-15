@@ -136,7 +136,6 @@ end
 G.FUNCS.card_stats_histogram_page = function(args)
   if not args or not args.cycle_config then return end
   local histogram_uibox = G.OVERLAY_MENU:get_UIE_by_ID('histogram')
-  local tab_contents = G.OVERLAY_MENU:get_UIE_by_ID('tab_contents')
 
 	histogram_uibox.config.object:remove()
 	histogram_uibox.config.object = UIBox{
