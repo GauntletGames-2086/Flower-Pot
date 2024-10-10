@@ -3,7 +3,7 @@ FP_NFS = require("FP_nativefs")
 FP_JSON = require("FP_json")
 
 FlowerPot = {
-    version = 0.6,
+    version = 0.7,
     path_to_self = function()
         for k, v in pairs(FP_NFS.getDirectoryItems(FP_lovely.mod_dir)) do
             if v == "Flower-Pot" or string.find(v, "Flower%-Pot") then return FP_lovely.mod_dir.."/"..v.."/" end

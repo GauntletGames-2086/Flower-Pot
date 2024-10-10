@@ -1,16 +1,9 @@
 FlowerPot.stat_types = {}
 FlowerPot.index_stat_types = {}
-FlowerPot.stat_groups = {}
-FlowerPot.index_stat_groups = {}
-FlowerPot.stat_tabs = {}
-FlowerPot.index_stat_tabs = {}
-FlowerPot.formats = {}
-FlowerPot.index_formats = {}
-
 -- "key": REQUIRED. Used when indexing FlowerPot.stat_types
 -- "valid_stat_groups": REQUIRED. Table of keys to stat groups that will use this stat type
 -- "create_stat_table": REQUIRED. Creates a stat table
--- "display_txt": OPTIONAL. Table with the keys to the text needed (depending on context)
+-- "display_txt": OPTIONAL. Table with the keys to display text
 function FlowerPot.addStatType(stat_type)
     for i, v in ipairs({"key", "valid_stat_groups", "create_stat_table"}) do
         if not stat_type[v] then error(("Flower Pot | Registered stat type does not have required param \"%s\""):format(v)) end
@@ -20,6 +13,8 @@ function FlowerPot.addStatType(stat_type)
     FlowerPot.index_stat_types[#FlowerPot.index_stat_types+1] = stat_type
 end
 
+FlowerPot.stat_groups = {}
+FlowerPot.index_stat_groups = {}
 -- "key": REQUIRED. Used when indexing FlowerPot.stat_groups
 -- "folder_dir": REQUIRED. Table of names that this stat group will be saved to
 -- "file_name": REQUIRED. Name of the stat_group file
@@ -34,6 +29,8 @@ function FlowerPot.addStatGroup(stat_group)
     FlowerPot.index_stat_groups[#FlowerPot.index_stat_groups+1] = stat_group
 end
 
+FlowerPot.stat_tabs = {}
+FlowerPot.index_stat_tabs = {}
 -- "key": REQUIRED. Used when indexing FlowerPot.stat_tab
 -- "tab_definition": REQUIRED. Function that returns the tab UI
 function FlowerPot.addStatTab(stat_tab)
@@ -45,6 +42,8 @@ function FlowerPot.addStatTab(stat_tab)
     FlowerPot.index_stat_tabs[#FlowerPot.index_stat_tabs+1] = stat_tab
 end
 
+FlowerPot.formats = {}
+FlowerPot.index_formats = {}
 -- "key": REQUIRED. Used when indexing FlowerPot.formats
 -- "write_file": REQUIRED. Function to write the stat group file
 -- "decode_file": OPTIONAL. Function to decode file (not always needed)
@@ -57,4 +56,29 @@ function FlowerPot.addFormat(format)
 
     FlowerPot.formats[format.key:lower()] = format
     FlowerPot.index_formats[#FlowerPot.index_formats+1] = format
+end
+
+FlowerPot.records = {}
+FlowerPot.rev_lookup_records = {}
+-- "key": REQUIRED. Used when indexing FlowerPot.records
+-- "add_tooltips": REQUIRED. Function to add tooltips onto the card
+-- "check_record": REQUIRED. Function to return the value
+    -- Note: Although this function is required to exist upon creation and needs to be a function
+    -- the initial definition doesn't need to be a function, just needs to exist (i.e. `check_record = true`)
+    -- important to know when cards following the same record have different vars to check
+-- "cards": OPTIONAL. Table with keys to cards with this record
+    -- Note: Adding a card to a record is done through FlowerPot.rev_lookup_records[<card key>] = <record config>
+    -- or having the key inside "cards" table when record is created
+-- "default": OPTIONAL. Default value
+
+function FlowerPot.addRecord(record)
+    for i, v in ipairs({"key", "add_tooltips", "check_record"}) do
+        if not record[v] then error(("Flower Pot | Registered record does not have required param \"%s\""):format(v)) end
+    end
+
+    for i, v in ipairs(record.cards or {}) do
+        FlowerPot.rev_lookup_records[v] = copy_table(record)
+    end
+
+    FlowerPot.records[record.key:lower()] = record
 end

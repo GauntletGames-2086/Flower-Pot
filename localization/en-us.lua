@@ -23,7 +23,7 @@ return {
     },
     descriptions = {
         Other = {
-            --Sucks that this has to be manual, but here we are
+            -- Voucher Stickers
             voucher_white_sticker = {
                 name = "White Sticker",
                 text = {
@@ -86,6 +86,39 @@ return {
                     "Used this Voucher",
                     "to win on {C:attention}Gold",
                     "{C:attention}Stake{} difficulty"
+                }
+            },
+            -- Records
+            record_highest_chips = {
+                name = "Record: Highest Chips",
+                text = {
+                    "Highest total {C:attention}Chips",
+                    "achieved on this Joker:",
+                    "{C:chips}+#1#"
+                }
+            },
+            record_highest_mult = {
+                name = "Record: Highest Mult",
+                text = {
+                    "Highest total {C:attention}Mult",
+                    "achieved on this Joker:",
+                    "{C:mult}+#1#"
+                }
+            },
+            record_highest_xmult = {
+                name = "Record: Highest XMult",
+                text = {
+                    "Highest total {C:attention}XMult",
+                    "achieved on this Joker:",
+                    "{X:red,C:white}X#1#"
+                }
+            },
+            record_highest_sell_value = {
+                name = "Record: Highest Sell Value",
+                text = {
+                    "Highest total {C:money}sell value",
+                    "achieved on this Joker:",
+                    "{C:money}$#1#{}",
                 }
             },
         }
