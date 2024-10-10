@@ -21,6 +21,7 @@ function buildPoker_hand_stats_master(page)
     local poker_hand_key = G.handlist[i+(8*(page-1))]
     if poker_hand_key ~= nil then
       local poker_hand_info = G.PROFILES[G.SETTINGS.profile].hand_usage[poker_hand_key:gsub("%s+", "")] or {order = poker_hand_key, count = 0, level = 1}
+      poker_hand_info.poker_hand_key = poker_hand_key
       poker_hand_uiboxes[#poker_hand_uiboxes+1] = create_UIBox_poker_hand_stats_row(poker_hand_info)
     end
   end
@@ -45,7 +46,7 @@ end
 function create_UIBox_poker_hand_stats_row(hand_data)
   return {n=G.UIT.R, config={align = "cm", padding = 0.05, r = 0.1, colour = G.C.UI.TRANSPARENT_DARK}, nodes={
     {n=G.UIT.C, config={align = "cm", minw = 3.5, maxw = 3.5}, nodes={
-      {n=G.UIT.T, config={text = ' '..localize(hand_data.order,'poker_hands'), scale = 0.45, colour = G.C.UI.TEXT_LIGHT, shadow = true}}
+      {n=G.UIT.T, config={text = ' '..(localize(hand_data.order,'poker_hands') ~= "ERROR" and localize(hand_data.order,'poker_hands') or localize(hand_data.poker_hand_key,'poker_hands')), scale = 0.45, colour = G.C.UI.TEXT_LIGHT, shadow = true}}
     }},
     {n=G.UIT.C, config={align = "cm", padding = 0.15, r = 0.1, colour = darken(G.C.JOKER_GREY, 0.1)}, nodes={
       {n=G.UIT.C, config={align = "cm", padding = 0.05}, nodes={
