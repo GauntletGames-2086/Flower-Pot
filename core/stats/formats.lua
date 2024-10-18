@@ -75,10 +75,10 @@ function FlowerPot.get_stat_group_dir(stat_group, path_to_format)
     return recurse_create_directory(stat_group.folder_dir or {}, path_to_format)
 end
 
-function FlowerPot.create_stat_files(stat_group, path, mod)
+function FlowerPot.create_stat_files(stat_group, path)
     for k, v in pairs(FlowerPot.formats) do
         if FlowerPot.check_format_compat(stat_group, v) then
-            local data_table = stat_group:create_data_table(v, mod)
+            local data_table = stat_group:create_data_table(v)
             if data_table and type(data_table) == "table" then
                 local file_type_path = path..v.key.."/"
                 v:write_file(data_table, stat_group, FlowerPot.get_stat_group_dir(stat_group, file_type_path))

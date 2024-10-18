@@ -32,7 +32,7 @@ end
 local createOptionsRef = create_UIBox_options
 function create_UIBox_options()
     local contents = createOptionsRef()
-    if G.STAGE == G.STAGES.MAIN_MENU then
+    if G.STAGE == G.STAGES.MAIN_MENU and not (SMODS and SMODS.can_load) then
         local m = UIBox_button({
             minw = 5,
             button = "FlowerPot_Menu",

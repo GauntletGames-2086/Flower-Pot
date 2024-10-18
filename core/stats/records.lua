@@ -10,7 +10,7 @@ FlowerPot.addRecord({
         "j_stone",
     },
     default = 0,
-    add_tooltips = function(self, info_queue, card_progress)
+    add_tooltips = function(self, info_queue, card_progress, card)
         info_queue[#info_queue+1] = {key = 'record_highest_chips', set = 'Other', vars = {(card_progress.records and card_progress.records.highest_chips) or self.default}}
     end,
     check_record = function(self, card)
@@ -30,7 +30,7 @@ FlowerPot.addRecord({
         "j_bootstraps",
     },
     default = 0,
-    add_tooltips = function(self, info_queue, card_progress)
+    add_tooltips = function(self, info_queue, card_progress, card)
         info_queue[#info_queue+1] = {key = 'record_highest_mult', set = 'Other', vars = {(card_progress.records and card_progress.records.highest_mult) or self.default}}
     end,
     check_record = function(self, card)
@@ -54,7 +54,7 @@ FlowerPot.addRecord({
         "j_yorick",
     },
     default = 1,
-    add_tooltips = function(self, info_queue, card_progress)
+    add_tooltips = function(self, info_queue, card_progress, card)
         info_queue[#info_queue+1] = {key = 'record_highest_xmult', set = 'Other', vars = {(card_progress.records and card_progress.records.highest_xmult) or self.default}}
     end,
     check_record = function(self, card)
@@ -67,11 +67,25 @@ FlowerPot.addRecord({
         "j_egg",
     },
     default = 0,
-    add_tooltips = function(self, info_queue, card_progress)
+    add_tooltips = function(self, info_queue, card_progress, card)
         info_queue[#info_queue+1] = {key = 'record_highest_sell_value', set = 'Other', vars = {(card_progress.records and card_progress.records.highest_sell_value) or self.default}}
     end,
     check_record = function(self, card)
         return card.sell_cost
+    end
+})
+FlowerPot.addRecord({
+    key = "highest_dollar",
+    cards = {
+        "j_rocket",
+        "j_cloud_9",
+    },
+    default = 0,
+    add_tooltips = function(self, info_queue, card_progress, card)
+        info_queue[#info_queue+1] = {key = 'record_highest_dollar', set = 'Other', vars = {(card_progress.records and card_progress.records.highest_dollar) or self.default}}
+    end,
+    check_record = function(self, card)
+        return card.ability.extra.dollars
     end
 })
 
@@ -99,8 +113,16 @@ end
 
 FlowerPot.rev_lookup_records["j_egg"].default = 2
 
+FlowerPot.rev_lookup_records["j_rocket"].default = 1
+FlowerPot.rev_lookup_records["j_rocket"].check_record = function(self, card)
+    return card.ability.extra.dollars
+end
+FlowerPot.rev_lookup_records["j_cloud_9"].default = 4
+FlowerPot.rev_lookup_records["j_cloud_9"].check_record = function(self, card)
+    return card.ability.extra*(card.ability.nine_tally)
+end
+
 function FlowerPot.update_record(card_key, record_key, value)
-    print(value)
     local card_progress = G.PROFILES[G.SETTINGS.profile].joker_usage[card_key]
     if card_progress then
         card_progress.records = card_progress.records or {}
@@ -120,7 +142,7 @@ function Card:calculate_joker(context)
         print(self.config.center.key)
         local value = FlowerPot.rev_lookup_records[self.config.center.key]:check_record(self)
         local function is_inf(x) return x ~= x end
-        if value and value ~= math.huge and is_inf(value) == false then
+        if value and to_number(value) ~= math.huge and is_inf(to_number(value)) == false then
             FlowerPot.update_record(self.config.center.key, FlowerPot.rev_lookup_records[self.config.center.key].key, value)
         end
     end

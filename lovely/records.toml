@@ -11,8 +11,8 @@ position = "before"
 payload = '''
 if FlowerPot.rev_lookup_records[_c.key] then
     local card_progress = G.PROFILES[G.SETTINGS.profile].joker_usage[_c.key] or {}
-    
-    FlowerPot.rev_lookup_records[_c.key]:add_tooltips(info_queue, card_progress)
+
+    FlowerPot.rev_lookup_records[_c.key]:add_tooltips(info_queue, card_progress, card)
 end
 '''
 match_indent = true

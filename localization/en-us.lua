@@ -121,6 +121,46 @@ return {
                     "{C:money}$#1#{}",
                 }
             },
+            record_highest_dollar = {
+                name = "Record: Highest Dollars",
+                text = {
+                    "Highest total {C:money}dollars",
+                    "achieved on this Joker:",
+                    "{C:money}$#1#{}",
+                }
+            },
+            record_highest_discards = {
+                name = "Record: Highest Discards",
+                text = {
+                    "Highest total {C:red}discards",
+                    "achieved on this Joker:",
+                    "{C:red}+#1#{}",
+                }
+            },
+            record_highest_streak = {
+                name = "Record: Highest Streak",
+                text = {
+                    "Highest total {C:attention}streak",
+                    "achieved on this Joker:",
+                    "{C:attention}#1#{}",
+                }
+            },
+            record_highest_consumable_slots = {
+                name = "Record: Highest Consumable Slots",
+                text = {
+                    "Highest total {C:tarot}Consumable{} slots",
+                    "achieved on this Joker:",
+                    "{C:tarot}+#1#{}",
+                }
+            },
+            record_highest_joker_slots = {
+                name = "Record: Highest Joker Slots",
+                text = {
+                    "Highest total {C:attention}Joker{} slots",
+                    "achieved on this Joker:",
+                    "{C:attention}+#1#{}",
+                }
+            },
         }
     }
 }
