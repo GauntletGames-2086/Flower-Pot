@@ -98,7 +98,7 @@ FlowerPot.rev_lookup_records["j_stone"].check_record = function(self, card)
 end
 
 FlowerPot.rev_lookup_records["j_fortune_teller"].check_record = function(self, card)
-    return G.GAME.consumeable_usage_total.tarot
+    return (G.GAME.consumeable_usage_total or {}).tarot
 end
 FlowerPot.rev_lookup_records["j_bootstraps"].check_record = function(self, card)
     return card.ability.extra.mult*math.floor((G.GAME.dollars + (G.GAME.dollar_buffer or 0))/card.ability.extra.dollars)
