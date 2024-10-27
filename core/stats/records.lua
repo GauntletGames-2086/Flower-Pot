@@ -139,7 +139,6 @@ local card_joker_calc = Card.calculate_joker
 function Card:calculate_joker(context)
     local ret, callback = card_joker_calc(self, context)
     if FlowerPot.rev_lookup_records[self.config.center.key] then
-        print(self.config.center.key)
         local value = FlowerPot.rev_lookup_records[self.config.center.key]:check_record(self)
         local function is_inf(x) return x ~= x end
         if value and to_number(value) ~= math.huge and is_inf(to_number(value)) == false then

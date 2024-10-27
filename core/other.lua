@@ -85,7 +85,6 @@ function FlowerPot.config_tab()
 end
 
 G.FUNCS.create_profile_stat_files = function(e)
-    print("Flower Pot | Creating Profile Stat Files")
     fetch_achievements()
     set_profile_progress()
     set_discover_tallies()
