@@ -11,7 +11,7 @@ FlowerPot.addRecord({
     },
     default = 0,
     add_tooltips = function(self, info_queue, card_progress, card)
-        info_queue[#info_queue+1] = {key = 'record_highest_chips', set = 'Other', vars = {(card_progress.records and card_progress.records.highest_chips) or self.default}}
+        info_queue[#info_queue+1] = {key = 'record_highest_chips', set = 'Other', vars = {to_number((card_progress.records and card_progress.records.highest_chips) or self.default)}}
     end,
     check_record = function(self, card)
         return card.ability.extra.chips
@@ -31,7 +31,7 @@ FlowerPot.addRecord({
     },
     default = 0,
     add_tooltips = function(self, info_queue, card_progress, card)
-        info_queue[#info_queue+1] = {key = 'record_highest_mult', set = 'Other', vars = {(card_progress.records and card_progress.records.highest_mult) or self.default}}
+        info_queue[#info_queue+1] = {key = 'record_highest_mult', set = 'Other', vars = {to_number((card_progress.records and card_progress.records.highest_mult) or self.default)}}
     end,
     check_record = function(self, card)
         return card.ability.mult
@@ -55,7 +55,7 @@ FlowerPot.addRecord({
     },
     default = 1,
     add_tooltips = function(self, info_queue, card_progress, card)
-        info_queue[#info_queue+1] = {key = 'record_highest_xmult', set = 'Other', vars = {(card_progress.records and card_progress.records.highest_xmult) or self.default}}
+        info_queue[#info_queue+1] = {key = 'record_highest_xmult', set = 'Other', vars = {to_number((card_progress.records and card_progress.records.highest_xmult) or self.default)}}
     end,
     check_record = function(self, card)
         return card.ability.x_mult
@@ -68,7 +68,7 @@ FlowerPot.addRecord({
     },
     default = 0,
     add_tooltips = function(self, info_queue, card_progress, card)
-        info_queue[#info_queue+1] = {key = 'record_highest_sell_value', set = 'Other', vars = {(card_progress.records and card_progress.records.highest_sell_value) or self.default}}
+        info_queue[#info_queue+1] = {key = 'record_highest_sell_value', set = 'Other', vars = {to_number((card_progress.records and card_progress.records.highest_sell_value) or self.default)}}
     end,
     check_record = function(self, card)
         return card.sell_cost
@@ -82,7 +82,7 @@ FlowerPot.addRecord({
     },
     default = 0,
     add_tooltips = function(self, info_queue, card_progress, card)
-        info_queue[#info_queue+1] = {key = 'record_highest_dollar', set = 'Other', vars = {(card_progress.records and card_progress.records.highest_dollar) or self.default}}
+        info_queue[#info_queue+1] = {key = 'record_highest_dollar', set = 'Other', vars = {to_number((card_progress.records and card_progress.records.highest_dollar) or self.default)}}
     end,
     check_record = function(self, card)
         return card.ability.extra.dollars

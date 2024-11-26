@@ -14,7 +14,7 @@ FlowerPot.addRecord({
     },
     default = 0,
     add_tooltips = function(self, info_queue, card_progress, card)
-        info_queue[#info_queue+1] = {key = 'record_highest_joker_slots', set = 'Other', vars = {(card_progress.records and card_progress.records.highest_joker_slots) or self.default}}
+        info_queue[#info_queue+1] = {key = 'record_highest_joker_slots', set = 'Other', vars = {to_number((card_progress.records and card_progress.records.highest_joker_slots) or self.default)}}
     end,
     check_record = function(self, card)
         return card.ability.extra.jkr_slots

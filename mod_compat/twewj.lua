@@ -16,7 +16,7 @@ FlowerPot.addRecord({
     },
     default = 0,
     add_tooltips = function(self, info_queue, card_progress, card)
-        info_queue[#info_queue+1] = {key = 'record_highest_streak', set = 'Other', vars = {(card_progress.records and card_progress.records.highest_streak) or self.default}}
+        info_queue[#info_queue+1] = {key = 'record_highest_streak', set = 'Other', vars = {to_number((card_progress.records and card_progress.records.highest_streak) or self.default)}}
     end,
     check_record = function(self, card)
         return card.ability.extra.currentStreak
@@ -30,7 +30,7 @@ FlowerPot.addRecord({
     },
     default = 0,
     add_tooltips = function(self, info_queue, card_progress, card)
-        info_queue[#info_queue+1] = {key = 'record_highest_consumable_slots', set = 'Other', vars = {(card_progress.records and card_progress.records.highest_consumable_slots) or self.default}}
+        info_queue[#info_queue+1] = {key = 'record_highest_consumable_slots', set = 'Other', vars = {to_number((card_progress.records and card_progress.records.highest_consumable_slots) or self.default)}}
     end,
     check_record = function(self, card)
         return card.ability.extra.bonusConsumable
