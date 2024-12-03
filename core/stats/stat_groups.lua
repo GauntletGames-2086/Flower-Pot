@@ -48,6 +48,8 @@ for i, v in ipairs({
                         end
                         card_table.wins = nil
                         card_table.wins_by_key = nil
+                        card_table.losses = nil
+                        card_table.losses_by_key = nil
                         data_table[#data_table+1] = card_table
                     end
                 end
