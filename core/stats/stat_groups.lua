@@ -50,6 +50,10 @@ for i, v in ipairs({
                         card_table.wins_by_key = nil
                         card_table.losses = nil
                         card_table.losses_by_key = nil
+                        if self.stat_set == "Joker" then 
+                            print(card_table.total_wins or 0)
+                            card_table.total_wins = card_table.total_wins or 0
+                        end
                         data_table[#data_table+1] = card_table
                     end
                 end
@@ -60,8 +64,8 @@ for i, v in ipairs({
         end,
         compat = {
             CSV = {
-                titles = {v.set, ("Times %s"):format(v.profile_key and "Used" or "Bought")},
-                data_order = {"name", "count"},
+                titles = {v.set, (v.profile_key) and "Times Used" or ((v.set == "Voucher") and "Time Bought") or "Total Rounds", "Total Wins"},
+                data_order = {"name", "count", "total_wins"},
             }
         }
     })
