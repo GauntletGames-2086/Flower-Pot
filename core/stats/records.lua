@@ -28,6 +28,8 @@ FlowerPot.addRecord({
         "j_flash",
         "j_trousers",
         "j_bootstraps",
+        "j_abstract",
+        "j_erosion"
     },
     default = 0,
     add_tooltips = function(self, info_queue, card_progress, card)
@@ -88,8 +90,23 @@ FlowerPot.addRecord({
         return card.ability.extra.dollars
     end
 })
+FlowerPot.addRecord({
+    key = "highest_levels",
+    cards = {
+        "j_space",
+    },
+    default = 0,
+    add_tooltips = function(self, info_queue, card_progress, card)
+        info_queue[#info_queue+1] = {key = 'record_highest_levels', set = 'Other', vars = {to_number((card_progress.records and card_progress.records.highest_levels) or self.default)}}
+    end,
+    check_record = function(self, card)
+        print(G.GAME.FLOWPOT.space_joker_levels)
+        return G.GAME.FLOWPOT.space_joker_levels
+    end
+})
 
 -- Edits to above records for specific jokers
+-- chips
 FlowerPot.rev_lookup_records["j_bull"].check_record = function(self, card)
     return card.ability.extra*math.max(0,(G.GAME.dollars + (G.GAME.dollar_buffer or 0)))
 end
@@ -97,13 +114,21 @@ FlowerPot.rev_lookup_records["j_stone"].check_record = function(self, card)
     return card.ability.extra*card.ability.stone_tally
 end
 
+-- mult
 FlowerPot.rev_lookup_records["j_fortune_teller"].check_record = function(self, card)
     return (G.GAME.consumeable_usage_total or {}).tarot
 end
 FlowerPot.rev_lookup_records["j_bootstraps"].check_record = function(self, card)
     return card.ability.extra.mult*math.floor((G.GAME.dollars + (G.GAME.dollar_buffer or 0))/card.ability.extra.dollars)
 end
+FlowerPot.rev_lookup_records["j_abstract"].check_record = function(self, card)
+    return (G.jokers and G.jokers.cards and #G.jokers.cards or 0)*card.ability.extra
+end
+FlowerPot.rev_lookup_records["j_erosion"].check_record = function(self, card)
+    return math.max(0,card.ability.extra*(G.playing_cards and (G.GAME.starting_deck_size - #G.playing_cards) or 0))
+end
 
+-- xmult
 FlowerPot.rev_lookup_records["j_steel_joker"].check_record = function(self, card)
     return 1 + card.ability.extra*card.ability.steel_tally
 end
@@ -111,8 +136,8 @@ FlowerPot.rev_lookup_records["j_caino"].check_record = function(self, card)
     return card.ability.caino_xmult
 end
 
+-- money
 FlowerPot.rev_lookup_records["j_egg"].default = 2
-
 FlowerPot.rev_lookup_records["j_rocket"].default = 1
 FlowerPot.rev_lookup_records["j_rocket"].check_record = function(self, card)
     return card.ability.extra.dollars

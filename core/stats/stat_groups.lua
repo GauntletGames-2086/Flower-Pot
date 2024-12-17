@@ -64,8 +64,16 @@ for i, v in ipairs({
         end,
         compat = {
             CSV = {
-                titles = {v.set, (v.profile_key) and "Times Used" or ((v.set == "Voucher") and "Time Bought") or "Total Rounds", "Total Wins"},
-                data_order = {"name", "count", "total_wins"},
+                titles = {
+                    v.set, 
+                    (v.profile_key) and "Times Used" or (v.set == "Voucher" and "Time Bought") or "Total Rounds", 
+                    (v.set == "Joker" or v.set == "Voucher") and "Total Wins"
+                },
+                data_order = {
+                    "name", 
+                    "count", 
+                    (v.set == "Joker" or v.set == "Voucher") and "total_wins",
+                },
             }
         }
     })

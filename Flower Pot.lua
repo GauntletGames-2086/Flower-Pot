@@ -1,11 +1,4 @@
---- STEAMODDED HEADER
---- MOD_NAME: Flower Pot
---- MOD_ID: FlowerPot
---- MOD_AUTHOR: [ItsFlowwey]
---- MOD_DESCRIPTION: Utility + QoL mod, aimed at improved stat display and collection
---- PREFIX: flowpot
---- VERSION: 0.7.1
---- PRIORITY: 999
+FlowerPot.CONFIG = SMODS.current_mod.config
 
 -- Move config tab from main menu to SMODS mod menu
 SMODS.current_mod.config_tab = function()

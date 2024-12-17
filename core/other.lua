@@ -52,6 +52,7 @@ G.FUNCS.FlowerPot_Menu = function(e)
                 label = localize{type = 'name_text', key = "j_flower_pot", set = "Joker"},
                 chosen = true,
                 tab_definition_function = function()
+                    G.ACTIVE_FLOWPOT_UI = true
                     return FlowerPot.config_tab()
                 end
             },
@@ -79,9 +80,25 @@ function FlowerPot.config_tab()
             colour = G.C.BLACK
         },
         nodes = {
-            UIBox_button({label = {localize("b_flowpot_create_profile_stats")}, button = "create_profile_stat_files", colour = G.C.ORANGE, minw = 5, minh = 0.7, scale = 0.6}),
+            {n=G.UIT.C, config = {align = "cm", padding = 0.1}, nodes = {
+				create_toggle({
+					label = localize("b_flowpot_tooltip_settings"),
+					ref_table = FlowerPot.CONFIG,
+					ref_value = "stat_tooltips_enabled",
+				}),
+                UIBox_button({label = {localize("b_flowpot_create_profile_stats")}, button = "create_profile_stat_files", colour = G.C.ORANGE, minw = 5, minh = 0.7, scale = 0.6}),
+			}},
         },
     }
+end
+
+local GFUNCS_options = G.FUNCS.options
+G.FUNCS.options = function(e)
+    if G.ACTIVE_FLOWPOT_UI then 
+        FlowerPot.save_flowpot_config()
+    end
+    G.ACTIVE_FLOWPOT_UI = nil
+    GFUNCS_options(e)
 end
 
 G.FUNCS.create_profile_stat_files = function(e)
@@ -97,4 +114,11 @@ G.FUNCS.create_profile_stat_files = function(e)
     end
 
     FlowerPot.create_complete_profile(profile_folder)
+end
+
+local init_game_obj_ref = Game.init_game_object
+function Game:init_game_object()
+    local ref = init_game_obj_ref()
+    ref.FLOWPOT = {}
+    return ref
 end

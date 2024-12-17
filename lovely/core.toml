@@ -5,13 +5,13 @@ priority = 0
 
 [[patches]]
 [patches.module]
-source = "nativefs.lua"
+source = "libs/nativefs.lua"
 before = "main.lua"
 name = "FP_nativefs"
 
 [[patches]]
 [patches.module]
-source = "json.lua"
+source = "libs/json.lua"
 before = "main.lua"
 name = "FP_json"
 
@@ -23,6 +23,7 @@ sources = [
 	"core/core.lua",
 ]
 
+# Needed for SMODS compat
 [[patches]]
 [patches.pattern]
 target = "game.lua"
@@ -30,4 +31,16 @@ pattern = 'init_localization()'
 position = "before"
 payload = '''
 if not (SMODS and SMODS.can_load) then FlowerPot.load_localization() end'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'engine/controller.lua'
+pattern = "function Controller:key_press_update(key, dt)"
+position = "after"
+payload = '''
+    if key == "escape" and G.ACTIVE_FLOWPOT_UI then
+        G.FUNCS.exit_mods()
+    end
+'''
 match_indent = true

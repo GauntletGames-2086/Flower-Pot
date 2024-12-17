@@ -17,20 +17,11 @@
             - [x] Custom Histogram master tabs (e.x. Joker/Consumable/Voucher)
             - [ ] Custom histogram settings tabs (e.x. "Consumable Type")
         - [ ] UI Polish
-            - [] Consistent height/width when histograms are not filled
-    - Poker Hand stats
-        - Button that lists all poker hands and displays most played + highest level
-        - [x] Initial
-        - [ ] UI Polish
-            - Make formatting look better
+            - [ ] Consistent height/width when histograms are not filled
     - Progress
         - [ ] Add Voucher discovery to it
-        - [ ] Move to button? Add specific information for what's missing? 
     - Records
         - Displays stats for specific object attributed to records (e.x. scaling jokers would have "Highest Chips/Mult/XMult")
-        - [ ] Initial
-        - [ ] API for custom records
-        - [ ] Leaderboard? Have to ask mod dev behind Sessions about the details if I decide it should exist.
-    - Run Stats
-        - Tracks previous runs and displays information about them (like Ankh Replay stats but more)
-        - [ ] Initial
+        - [x] Initial
+        - [x] API for custom records
+        - [ ] Special records (e.x. Space Joker trigger counts)

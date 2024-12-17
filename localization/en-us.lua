@@ -19,6 +19,7 @@ return {
             b_flowpot_all_types = "All Types",
             b_flowpot_highest_lvl = "Highest lvl:",
             b_flowpot_total_played = "Total Played:",
+            b_flowpot_tooltip_settings = "Display Stat Tooltips",
         },
     },
     descriptions = {
@@ -161,6 +162,15 @@ return {
                     "{C:attention}+#1#{}",
                 }
             },
+            record_highest_levels = {
+                name = "Record: Highest Levels",
+                text = {
+                    "Highest total times this",
+                    "{C:attention}Joker{} leveled a",
+                    "{C:legendary,E:1}poker hand:",
+                    "{C:attention}+#1#{}",
+                }
+            }
         }
     }
 }
