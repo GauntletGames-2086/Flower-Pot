@@ -100,7 +100,6 @@ FlowerPot.addRecord({
         info_queue[#info_queue+1] = {key = 'record_highest_levels', set = 'Other', vars = {to_number((card_progress.records and card_progress.records.highest_levels) or self.default)}}
     end,
     check_record = function(self, card)
-        print(G.GAME.FLOWPOT.space_joker_levels)
         return G.GAME.FLOWPOT.space_joker_levels
     end
 })

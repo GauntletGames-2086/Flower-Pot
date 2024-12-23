@@ -51,7 +51,6 @@ for i, v in ipairs({
                         card_table.losses = nil
                         card_table.losses_by_key = nil
                         if self.stat_set == "Joker" then 
-                            print(card_table.total_wins or 0)
                             card_table.total_wins = card_table.total_wins or 0
                         end
                         data_table[#data_table+1] = card_table
