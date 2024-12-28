@@ -37,6 +37,7 @@ for i, v in ipairs({
                         card_table["name"] = localize{type = 'name_text', key = k, set = self.stat_set}
                         -- Reconstruct wins as total_wins to not crash from saving as JSON
                         card_table.total_wins = 0
+
                         if SMODS and SMODS.can_load then
                             for _, vvv in pairs(card_table.wins_by_key or {}) do
                                 card_table.total_wins = card_table.total_wins + vvv
@@ -45,14 +46,16 @@ for i, v in ipairs({
                             for _, vvv in ipairs(card_table.wins or {}) do
                                 card_table.total_wins = card_table.total_wins + vvv
                             end
+                            for _, vvv in pairs(card_table.wins or {}) do
+                                card_table.total_wins = card_table.total_wins + vvv
+                            end
                         end
+
                         card_table.wins = nil
                         card_table.wins_by_key = nil
                         card_table.losses = nil
                         card_table.losses_by_key = nil
-                        if self.stat_set == "Joker" then 
-                            card_table.total_wins = card_table.total_wins or 0
-                        end
+
                         data_table[#data_table+1] = card_table
                     end
                 end
