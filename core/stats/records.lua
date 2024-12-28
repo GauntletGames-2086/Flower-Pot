@@ -100,14 +100,14 @@ FlowerPot.addRecord({
         info_queue[#info_queue+1] = {key = 'record_highest_levels', set = 'Other', vars = {to_number((card_progress.records and card_progress.records.highest_levels) or self.default)}}
     end,
     check_record = function(self, card)
-        return G.GAME.FLOWPOT.space_joker_levels
+        return (G.GAME.FLOWPOT or {}).space_joker_levels
     end
 })
 
 -- Edits to above records for specific jokers
 -- chips
 FlowerPot.rev_lookup_records["j_bull"].check_record = function(self, card)
-    return card.ability.extra*math.max(0,(G.GAME.dollars + (G.GAME.dollar_buffer or 0)))
+    return card.ability.extra*math.max(0,(to_number(G.GAME.dollars) + (G.GAME.dollar_buffer or 0)))
 end
 FlowerPot.rev_lookup_records["j_stone"].check_record = function(self, card)
     return card.ability.extra*card.ability.stone_tally
@@ -118,7 +118,7 @@ FlowerPot.rev_lookup_records["j_fortune_teller"].check_record = function(self, c
     return (G.GAME.consumeable_usage_total or {}).tarot
 end
 FlowerPot.rev_lookup_records["j_bootstraps"].check_record = function(self, card)
-    return card.ability.extra.mult*math.floor((G.GAME.dollars + (G.GAME.dollar_buffer or 0))/card.ability.extra.dollars)
+    return card.ability.extra.mult*math.floor((to_number(G.GAME.dollars) + (G.GAME.dollar_buffer or 0))/card.ability.extra.dollars)
 end
 FlowerPot.rev_lookup_records["j_abstract"].check_record = function(self, card)
     return (G.jokers and G.jokers.cards and #G.jokers.cards or 0)*card.ability.extra
@@ -129,7 +129,7 @@ end
 
 -- xmult
 FlowerPot.rev_lookup_records["j_steel_joker"].check_record = function(self, card)
-    return 1 + card.ability.extra*card.ability.steel_tally
+    return 1 + card.ability.extra*(card.ability.steel_tally or 0)
 end
 FlowerPot.rev_lookup_records["j_caino"].check_record = function(self, card)
     return card.ability.caino_xmult
