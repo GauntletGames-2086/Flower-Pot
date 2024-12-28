@@ -143,7 +143,7 @@ FlowerPot.rev_lookup_records["j_rocket"].check_record = function(self, card)
 end
 FlowerPot.rev_lookup_records["j_cloud_9"].default = 4
 FlowerPot.rev_lookup_records["j_cloud_9"].check_record = function(self, card)
-    return card.ability.extra*(card.ability.nine_tally)
+    return card.ability.extra*(card.ability.nine_tally or 0)
 end
 
 function FlowerPot.update_record(card_key, record_key, value)
