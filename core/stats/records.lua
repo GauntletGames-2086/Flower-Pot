@@ -110,7 +110,7 @@ FlowerPot.rev_lookup_records["j_bull"].check_record = function(self, card)
     return card.ability.extra*math.max(0,(to_number(G.GAME.dollars) + (G.GAME.dollar_buffer or 0)))
 end
 FlowerPot.rev_lookup_records["j_stone"].check_record = function(self, card)
-    return card.ability.extra*card.ability.stone_tally
+    return card.ability.extra*(card.ability.stone_tally or 0)
 end
 
 -- mult
@@ -121,7 +121,7 @@ FlowerPot.rev_lookup_records["j_bootstraps"].check_record = function(self, card)
     return card.ability.extra.mult*math.floor((to_number(G.GAME.dollars) + (G.GAME.dollar_buffer or 0))/card.ability.extra.dollars)
 end
 FlowerPot.rev_lookup_records["j_abstract"].check_record = function(self, card)
-    return (G.jokers and G.jokers.cards and #G.jokers.cards or 0)*card.ability.extra
+    return (G.jokers and #G.jokers.cards or 0)*card.ability.extra
 end
 FlowerPot.rev_lookup_records["j_erosion"].check_record = function(self, card)
     return math.max(0,card.ability.extra*(G.playing_cards and (G.GAME.starting_deck_size - #G.playing_cards) or 0))
