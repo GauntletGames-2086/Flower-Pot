@@ -41,3 +41,6 @@ luac.out
 
 # Mockup image files
 mockups/**
+
+.luarc.json
+.vscode

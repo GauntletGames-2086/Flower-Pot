@@ -26,9 +26,9 @@ FlowerPot = {
 
 for _, path in ipairs {
     "core/api.lua",
-	"core/stats.lua",
-	"core/ui.lua",
+    "core/stats.lua",
+    "core/ui.lua",
     "core/other.lua",
 } do
-	assert(load(FP_NFS.read(FlowerPot.path_to_self()..path), ('=[FlowerPot-CORE _ "%s"]'):format(path)))()
+    assert(load(FP_NFS.read(FlowerPot.path_to_self()..path), ('=[FlowerPot-CORE _ "%s"]'):format(path)))()
 end

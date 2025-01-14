@@ -70,7 +70,7 @@ function level_up_hand(card, hand, instant, amount)
     end
     local function is_inf(x) return x ~= x end
     if G.GAME.hands[hand].level ~= math.huge and is_inf(G.GAME.hands[hand].level) == false then --don't save numbers that are NaN or naneinf
-        if G.PROFILES[G.SETTINGS.profile].hand_usage[poker_hand_label].level < G.GAME.hands[hand].level then 
+        if to_number(G.PROFILES[G.SETTINGS.profile].hand_usage[poker_hand_label].level) < to_number(G.GAME.hands[hand].level) then 
             G.PROFILES[G.SETTINGS.profile].hand_usage[poker_hand_label].level = to_number(G.GAME.hands[hand].level)
         end
     end
@@ -107,5 +107,9 @@ function FlowerPot.convert_save_data()
 end
 
 to_number = to_number or function(x)
+    return x
+end
+
+to_big = to_big or function(x)
     return x
 end
