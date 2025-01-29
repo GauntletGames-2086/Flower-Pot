@@ -15,14 +15,45 @@ FlowerPot = {
     end,
     path_to_stats = function() return love.filesystem.getSaveDirectory().."/Flower Pot - Stat Files/" end,
     save_flowpot_config = function() -- duplicate of SMODS.save_mod_config
-        local success = pcall(function()
-            NFS.createDirectory('config')
+        local success = assert(pcall(function()
+            FP_NFS.createDirectory('config')
             local serialized = 'return '..serialize(FlowerPot.CONFIG)
-            NFS.write(('config/%s.jkr'):format("flowpot"), serialized)
-        end)
+            FP_NFS.write('config/FlowerPot.jkr', serialized)
+        end))
         return success
     end,
+    load_flowpot_config = function(mod) -- duplicate of SMODS.load_mod_config
+        local s1, config = pcall(function()
+            return load(FP_NFS.read('config/FlowerPot.jkr'), '=[FlowerPot-CONFIG]')()
+        end)
+        local s2, default_config = pcall(function()
+            return load(FP_NFS.read(FlowerPot.path_to_self().."config.lua"), '=[FlowerPot-CONFIG "default"]')()
+        end)
+        if not s1 or type(config) ~= 'table' then config = {} end
+        if not s2 or type(default_config) ~= 'table' then default_config = {} end
+        FlowerPot.CONFIG = default_config
+        
+        local function insert_saved_config(savedCfg, defaultCfg)
+            for savedKey, savedVal in pairs(savedCfg) do
+                local savedValType = type(savedVal)
+                local defaultValType = type(defaultCfg[savedKey])
+                if not defaultCfg[savedKey] then
+                    defaultCfg[savedKey] = savedVal
+                elseif savedValType ~= defaultValType then
+                elseif savedValType == "table" and defaultValType == "table" then
+                    insert_saved_config(savedVal, defaultCfg[savedKey])
+                elseif savedVal ~= defaultCfg[savedKey] then
+                    defaultCfg[savedKey] = savedVal
+                end
+                
+            end
+        end
+
+        insert_saved_config(config, FlowerPot.CONFIG)
+    end
 }
+
+FlowerPot.load_flowpot_config()
 
 for _, path in ipairs {
     "core/api.lua",

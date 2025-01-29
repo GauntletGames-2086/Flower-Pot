@@ -95,7 +95,8 @@ end
 local GFUNCS_options = G.FUNCS.options
 G.FUNCS.options = function(e)
     if G.ACTIVE_FLOWPOT_UI then 
-        FlowerPot.save_flowpot_config()
+        local success, err = pcall(function() FlowerPot.save_flowpot_config() end)
+        if not success then print("FlowerPot-CORE - Config failed to load: "..err) end
     end
     G.ACTIVE_FLOWPOT_UI = nil
     GFUNCS_options(e)
@@ -121,4 +122,52 @@ function Game:init_game_object()
     local ref = init_game_obj_ref()
     ref.FLOWPOT = {}
     return ref
+end
+
+-- Copy of Steamodded's serialize function for config loading consistency
+function serialize(t, indent)
+    indent = indent or ''
+    local str = '{\n'
+	for k, v in ipairs(t) do
+        str = str .. indent .. '\t'
+		if type(v) == 'number' then
+            str = str .. v
+        elseif type(v) == 'boolean' then
+            str = str .. (v and 'true' or 'false')
+        elseif type(v) == 'string' then
+            str = str .. serialize_string(v)
+        elseif type(v) == 'table' then
+            str = str .. serialize(v, indent .. '\t')
+        else
+            -- not serializable
+            str = str .. 'nil'
+        end
+		str = str .. ',\n'
+	end
+    for k, v in pairs(t) do
+		if type(k) == 'string' then
+        	str = str .. indent .. '\t' .. '[' .. serialize_string(k) .. '] = '
+            
+			if type(v) == 'number' then
+				str = str .. v
+            elseif type(v) == 'boolean' then
+                str = str .. (v and 'true' or 'false')
+			elseif type(v) == 'string' then
+				str = str .. serialize_string(v)
+			elseif type(v) == 'table' then
+				str = str .. serialize(v, indent .. '\t')
+			else
+				-- not serializable
+                str = str .. 'nil'
+			end
+			str = str .. ',\n'
+		end
+    end
+    str = str .. indent .. '}'
+	return str
+end
+
+-- Copy of Steamodded's serialize_string function for config loading consistency
+function serialize_string(s)
+	return string.format("%q", s)
 end
