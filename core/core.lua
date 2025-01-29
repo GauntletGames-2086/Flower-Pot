@@ -53,7 +53,7 @@ FlowerPot = {
     end
 }
 
-FlowerPot.load_flowpot_config()
+if not (SMODS and SMODS.can_load) then FlowerPot.load_flowpot_config() end
 
 for _, path in ipairs {
     "core/api.lua",

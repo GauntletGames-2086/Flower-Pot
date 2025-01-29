@@ -124,50 +124,52 @@ function Game:init_game_object()
     return ref
 end
 
--- Copy of Steamodded's serialize function for config loading consistency
-function serialize(t, indent)
-    indent = indent or ''
-    local str = '{\n'
-	for k, v in ipairs(t) do
-        str = str .. indent .. '\t'
-		if type(v) == 'number' then
-            str = str .. v
-        elseif type(v) == 'boolean' then
-            str = str .. (v and 'true' or 'false')
-        elseif type(v) == 'string' then
-            str = str .. serialize_string(v)
-        elseif type(v) == 'table' then
-            str = str .. serialize(v, indent .. '\t')
-        else
-            -- not serializable
-            str = str .. 'nil'
-        end
-		str = str .. ',\n'
-	end
-    for k, v in pairs(t) do
-		if type(k) == 'string' then
-        	str = str .. indent .. '\t' .. '[' .. serialize_string(k) .. '] = '
-            
-			if type(v) == 'number' then
-				str = str .. v
+if not (SMODS and SMODS.can_load) then 
+    -- Copy of Steamodded's serialize function for config loading consistency
+    function serialize(t, indent)
+        indent = indent or ''
+        local str = '{\n'
+        for k, v in ipairs(t) do
+            str = str .. indent .. '\t'
+            if type(v) == 'number' then
+                str = str .. v
             elseif type(v) == 'boolean' then
                 str = str .. (v and 'true' or 'false')
-			elseif type(v) == 'string' then
-				str = str .. serialize_string(v)
-			elseif type(v) == 'table' then
-				str = str .. serialize(v, indent .. '\t')
-			else
-				-- not serializable
+            elseif type(v) == 'string' then
+                str = str .. serialize_string(v)
+            elseif type(v) == 'table' then
+                str = str .. serialize(v, indent .. '\t')
+            else
+                -- not serializable
                 str = str .. 'nil'
-			end
-			str = str .. ',\n'
-		end
+            end
+            str = str .. ',\n'
+        end
+        for k, v in pairs(t) do
+            if type(k) == 'string' then
+                str = str .. indent .. '\t' .. '[' .. serialize_string(k) .. '] = '
+                
+                if type(v) == 'number' then
+                    str = str .. v
+                elseif type(v) == 'boolean' then
+                    str = str .. (v and 'true' or 'false')
+                elseif type(v) == 'string' then
+                    str = str .. serialize_string(v)
+                elseif type(v) == 'table' then
+                    str = str .. serialize(v, indent .. '\t')
+                else
+                    -- not serializable
+                    str = str .. 'nil'
+                end
+                str = str .. ',\n'
+            end
+        end
+        str = str .. indent .. '}'
+        return str
     end
-    str = str .. indent .. '}'
-	return str
-end
 
--- Copy of Steamodded's serialize_string function for config loading consistency
-function serialize_string(s)
-	return string.format("%q", s)
+    -- Copy of Steamodded's serialize_string function for config loading consistency
+    function serialize_string(s)
+        return string.format("%q", s)
+    end
 end
