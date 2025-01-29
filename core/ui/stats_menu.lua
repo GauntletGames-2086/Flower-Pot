@@ -1,10 +1,3 @@
-G.FUNCS.high_scores = function(e)
-  G.SETTINGS.paused = true
-  G.FUNCS.overlay_menu{
-    definition = create_UIBox_high_scores(),
-  }
-end
-
 function create_UIBox_high_scores()
   fetch_achievements()
   set_profile_progress()
