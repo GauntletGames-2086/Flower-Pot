@@ -86,12 +86,12 @@ function buildCardStats_histogram(args)
   end
 
   return {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={
-    {n=G.UIT.C, config={align = "cm", padding = 0.05, colour = G.C.UI.TRANSPARENT_DARK, r = 0.1, minh = 0.5*G.CARD_H*(#used_cards > 8 and 4 or 5), minw = 0.5*G.CARD_H*3*1.5}, nodes={
+    {n=G.UIT.C, config={align = "cm", padding = 0.05, colour = G.C.UI.TRANSPARENT_DARK, r = 0.1, minh = 0.5*G.CARD_H*5, minw = 0.5*G.CARD_H*3*1.5}, nodes={
       {n=G.UIT.R, config={align = "cm", padding = 0.1}, nodes={
-        {n=G.UIT.B, config={w=0.2,h=0.2,r =0.1,colour = histogram_colour}},
+        {n=G.UIT.B, config={w = 0.2, h = 0.2, r = 0.1, colour = histogram_colour}},
         {n=G.UIT.T, config={text = localize(FlowerPot.stat_types[stat_type].display_txt.full), scale = 0.35, colour = G.C.WHITE}}
       }},
-      {n=G.UIT.R, config={align = "cm", colour = G.C.BLACK, r = 0.1, minh = 0.5*G.CARD_H*(#used_cards > 8 and 4 or 5), minw = 0.5*G.CARD_H*3, padding = 0.1}, nodes={
+      {n=G.UIT.R, config={align = "cm", colour = G.C.BLACK, r = 0.1, minh = 0.5*G.CARD_H*5, minw = 0.5*G.CARD_H*3, padding = 0.1}, nodes={
         {n=G.UIT.C, config={align = "cm", padding = 0.1}, nodes=histograms[1]},
         {n=G.UIT.C, config={align = "cm", padding = 0.1}, nodes=histograms[2]},
       }},
@@ -148,34 +148,10 @@ end
 -- Histogram Settings
 function buildCardStats_histogram_settings(args)
   local histogram_setting_tabs = {}
-  histogram_setting_tabs[#histogram_setting_tabs+1] = {
-    label = localize("b_flowpot_stat_types"),
-    chosen = true,
-    tab_definition_function = function() 
-      return {
-        n = G.UIT.ROOT,
-        config = {
-          emboss = 0.05,
-          minh = 6,
-          r = 0.1,
-          minw = 6,
-          align = "tm",
-          padding = 0.2,
-          colour = G.C.CLEAR
-        },
-        nodes = {
-          {n=G.UIT.O, config={id = 'stat_types_uibox', object = 
-            UIBox{
-              definition = create_UIBox_histogram_stat_types({}), 
-              config = {offset = {x=0,y=0}}}
-          }}
-        }
-      }
-    end,
-  }
   if FlowerPot.GLOBAL.CARD_STATS_FILTER.consumable then 
     histogram_setting_tabs[#histogram_setting_tabs+1] = {
       label = localize("b_flowpot_consumable_types"),
+      chosen = (FlowerPot.GLOBAL.CARD_STATS_FILTER.consumable and true),
       tab_definition_function = function() 
         return {
           n = G.UIT.ROOT,
@@ -200,6 +176,31 @@ function buildCardStats_histogram_settings(args)
       end,
     }
   end
+  histogram_setting_tabs[#histogram_setting_tabs+1] = {
+    label = localize("b_flowpot_stat_types"),
+    chosen = (not FlowerPot.GLOBAL.CARD_STATS_FILTER.consumable and true),
+    tab_definition_function = function() 
+      return {
+        n = G.UIT.ROOT,
+        config = {
+          emboss = 0.05,
+          minh = 6,
+          r = 0.1,
+          minw = 6,
+          align = "tm",
+          padding = 0.2,
+          colour = G.C.CLEAR
+        },
+        nodes = {
+          {n=G.UIT.O, config={id = 'stat_types_uibox', object = 
+            UIBox{
+              definition = create_UIBox_histogram_stat_types({}), 
+              config = {offset = {x=0,y=0}}}
+          }}
+        }
+      }
+    end,
+  }
   if SMODS and SMODS.can_load then 
     histogram_setting_tabs[#histogram_setting_tabs+1] = {
       label = localize("b_flowpot_mods"),
@@ -263,8 +264,8 @@ function create_UIBox_histogram_stat_types(args)
   end
 
   return {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={
-    {n=G.UIT.C, config={align = "cm", padding = 0.05}, nodes={
-      {n=G.UIT.R, config={align = "cm", padding = 0.1, colour = G.C.BLACK, minh = 3.6, r = 0.1}, nodes=buttons},
+    {n=G.UIT.C, config={align = "cm", padding = 0.05, minh = 2}, nodes={
+      {n=G.UIT.R, config={align = "cm", padding = 0.1, colour = G.C.BLACK, minh = 5.5, r = 0.1}, nodes=buttons},
       #available_stat_types > 6 and {n=G.UIT.R, config={align = "cm"}, nodes={
         create_option_cycle({options = stat_types_options, w = 4.5, cycle_shoulders = true, opt_callback = 'card_stat_types_page', current_option = page, colour = G.C.RED, no_pips = true, focus_args = {snap_to = true, nav = 'wide'}})
       }} or nil
@@ -295,24 +296,36 @@ function create_UIBox_histogram_consumable_type_tab(args)
   local stat_group, _set, stat_type, mod, page = FlowerPot.GLOBAL.CARD_STATS_FILTER.stat_group, 
     FlowerPot.GLOBAL.CARD_STATS_FILTER.set, FlowerPot.GLOBAL.CARD_STATS_FILTER.stat_type, FlowerPot.GLOBAL.CARD_STATS_FILTER.mod, args.page or 1
   local consumable_type_index = {}
-  local default_consumable_types = {["Tarot"] = true, ["Planet"] = true, ["Spectral"] = true}
+  local default_consumable_types = {["Tarot"] = 3, ["Planet"] = 2, ["Spectral"] = 1}
   for k, v in pairs(FlowerPot.stat_groups) do
     if v.stat_set and ((SMODS and SMODS.can_load and SMODS.ConsumableTypes[v.stat_set]) or default_consumable_types[v.stat_set]) then
       consumable_type_index[#consumable_type_index+1] = v
     end
   end
 
+  table.sort(consumable_type_index, 
+    function(a, b)
+      if (default_consumable_types[a.stat_set] or default_consumable_types[b.stat_set]) then
+        return (default_consumable_types[a.stat_set] or 0) > (default_consumable_types[b.stat_set] or 0)
+      else
+        return a.stat_set < b.stat_set
+      end
+    end
+  )
+
   local buttons = {}
-  if page == 1 then buttons[1] = {n=G.UIT.R, config = {align = 'cm', padding = 0.1}, nodes = {
-    UIBox_button({ label = {localize("b_flowpot_all_types")}, button = "histogram_reset_consumable_type", ref_table = {stat_group = "consumeable_usage"}, colour = G.C.RED, minw = 5, minh = 0.65, scale = 0.6})
-  }} end
+  if page == 1 then 
+    buttons[1] = {n=G.UIT.R, config = {align = 'cm', padding = 0.1}, nodes = {
+      UIBox_button({ label = {localize("b_flowpot_all_types")}, button = "histogram_reset_consumable_type", ref_table = {stat_group = "consumeable_usage"}, colour = G.C.RED, minw = 5, minh = 0.65, scale = 0.6})
+    }}
+  end
   for i = 1, page == 1 and 5 or 6 do
     local selected_consumable_type = consumable_type_index[i+(6*(page-1))]
     if selected_consumable_type then 
       local stat_group_info = FlowerPot.stat_groups[stat_group]:create_data_table()
       if #stat_group_info > 0 then
         buttons[#buttons+1] = {n=G.UIT.R, config = {align = 'cm', padding = 0.1}, nodes = {
-          UIBox_button({ label = {localize('k_'..string.lower(selected_consumable_type.stat_set))}, button = "histogram_reset_consumable_type", ref_table = {stat_group = selected_consumable_type.key, set = selected_consumable_type.stat_set}, colour = G.C.RED, minw = 5, minh = 0.65, scale = 0.6})
+          UIBox_button({ label = {localize('k_'..string.lower(selected_consumable_type.stat_set))}, button = "histogram_reset_consumable_type", ref_table = {stat_group = selected_consumable_type.key, set = selected_consumable_type.stat_set}, colour = G.C.SECONDARY_SET[selected_consumable_type.stat_set] or G.C.RED, minw = 5, minh = 0.65, scale = 0.6})
         }}
       end
     end
@@ -324,8 +337,8 @@ function create_UIBox_histogram_consumable_type_tab(args)
   end
 
   return {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={
-    {n=G.UIT.C, config={align = "cm", padding = 0.05}, nodes={
-      {n=G.UIT.R, config={align = "cm", padding = 0.05, colour = G.C.BLACK, minh = 3.6, r = 0.1}, nodes=buttons},
+    {n=G.UIT.C, config={align = "cm", padding = 0.05, minh = 2}, nodes={
+      {n=G.UIT.R, config={align = "cm", padding = 0.05, colour = G.C.BLACK, minh = 5.5, r = 0.1}, nodes=buttons},
       #consumable_type_index > 6 and {n=G.UIT.R, config={align = "cm"}, nodes={
         create_option_cycle({options = stat_consumable_type_options, w = 4.5, cycle_shoulders = true, opt_callback = 'card_stat_consumable_type_page', current_option = page, colour = G.C.RED, no_pips = true, focus_args = {snap_to = true, nav = 'wide'}})
       }} or nil
@@ -383,8 +396,8 @@ function create_UIBox_histogram_mods_tab(args)
   end
 
   return {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={
-    {n=G.UIT.C, config={align = "cm", padding = 0.05}, nodes={
-      {n=G.UIT.R, config={align = "cm", padding = 0.05, colour = G.C.BLACK, minh = 3.6, minw = 5, r = 0.1}, nodes=buttons},
+    {n=G.UIT.C, config={align = "cm", padding = 0.05, minh = 2}, nodes={
+      {n=G.UIT.R, config={align = "cm", padding = 0.05, colour = G.C.BLACK, minh = 5.5, r = 0.1}, nodes=buttons},
       #mods_by_index > 6 and {n=G.UIT.R, config={align = "cm"}, nodes={
         create_option_cycle({options = stat_mods_options, w = 4.5, cycle_shoulders = true, opt_callback = 'card_stat_mods_page', current_option = page, colour = G.C.RED, no_pips = true, focus_args = {snap_to = true, nav = 'wide'}})
       }} or nil

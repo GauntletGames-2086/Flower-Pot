@@ -5,7 +5,7 @@ return {
             b_flowpot_create_profile_stats = "Create Profile Stat Files",
             b_flowpot_poker_hand_stats = "Poker Hand Stats",
             b_flowpot_stat_types = "Stat Types",
-            b_flowpot_consumable_types = "Consumable Types",
+            b_flowpot_consumable_types = "Card Types",
             b_flowpot_mods = "Mods",
             b_flowpot_rounds_won_short = "Completed Rounds",
             b_flowpot_rounds_won_expand = "Completed rounds with this Joker",
