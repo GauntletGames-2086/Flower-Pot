@@ -119,7 +119,7 @@ end
 
 local init_game_obj_ref = Game.init_game_object
 function Game:init_game_object()
-    local ref = init_game_obj_ref()
+    local ref = init_game_obj_ref(self)
     ref.FLOWPOT = {}
     return ref
 end
