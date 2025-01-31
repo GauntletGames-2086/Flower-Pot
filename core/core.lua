@@ -3,7 +3,7 @@ FP_NFS = require("FP_nativefs")
 FP_JSON = require("FP_json")
 
 FlowerPot = {
-    VERSION = "0.7.2",
+    VERSION = "0.7.25",
     GLOBAL = {},
     CONFIG = {
         ["stat_tooltips_enabled"] = true,
@@ -22,7 +22,7 @@ FlowerPot = {
         end))
         return success
     end,
-    load_flowpot_config = function(mod) -- duplicate of SMODS.load_mod_config
+    load_flowpot_config = function() -- duplicate of SMODS.load_mod_config
         local s1, config = pcall(function()
             return load(FP_NFS.read('config/FlowerPot.jkr'), '=[FlowerPot-CONFIG]')()
         end)
