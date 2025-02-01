@@ -61,5 +61,5 @@ for _, path in ipairs {
     "core/ui.lua",
     "core/other.lua",
 } do
-    assert(load(FP_NFS.read(FlowerPot.path_to_self()..path), ('=[FlowerPot-CORE _ "%s"]'):format(path)), "Flower Pot is nested")()
+    assert(load(FP_NFS.read(FlowerPot.path_to_self()..path), ('=[FlowerPot-CORE _ "%s"]'):format(path)), "Flower Pot could not be found. \nPlease ensure that the Flower Pot mod folder is renamed to match the text \"Flower-Pot\".")()
 end

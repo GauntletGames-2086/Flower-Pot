@@ -1,3 +1,5 @@
+assert(SMODS.current_mod.lovely, "Flower Pot modules could not load. Please ensure that Flower Pot is not nested. \nCorrected file depth: \"Mods/Flower-Pot/Flower Pot.lua\"")
+
 FlowerPot.CONFIG = SMODS.current_mod.config
 
 -- Move config tab from main menu to SMODS mod menu
