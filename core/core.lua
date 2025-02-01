@@ -61,5 +61,5 @@ for _, path in ipairs {
     "core/ui.lua",
     "core/other.lua",
 } do
-    assert(load(FP_NFS.read(FlowerPot.path_to_self()..path), ('=[FlowerPot-CORE _ "%s"]'):format(path)))()
+    assert(load(FP_NFS.read(FlowerPot.path_to_self()..path), ('=[FlowerPot-CORE _ "%s"]'):format(path)), "Flower Pot is nested")()
 end
