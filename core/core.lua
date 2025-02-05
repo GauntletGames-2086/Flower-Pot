@@ -16,15 +16,15 @@ FlowerPot = {
     path_to_stats = function() return love.filesystem.getSaveDirectory().."/Flower Pot - Stat Files/" end,
     save_flowpot_config = function() -- duplicate of SMODS.save_mod_config
         local success = assert(pcall(function()
-            FP_NFS.createDirectory('config')
+            FP_NFS.createDirectory(love.filesystem.getSaveDirectory()..'/config')
             local serialized = 'return '..serialize(FlowerPot.CONFIG)
-            FP_NFS.write('config/FlowerPot.jkr', serialized)
+            FP_NFS.write(love.filesystem.getSaveDirectory()..'/config/FlowerPot.jkr', serialized)
         end))
         return success
     end,
     load_flowpot_config = function() -- duplicate of SMODS.load_mod_config
         local s1, config = pcall(function()
-            return load(FP_NFS.read('config/FlowerPot.jkr'), '=[FlowerPot-CONFIG]')()
+            return load(FP_NFS.read(love.filesystem.getSaveDirectory()..'/config/FlowerPot.jkr'), '=[FlowerPot-CONFIG]')()
         end)
         local s2, default_config = pcall(function()
             return load(FP_NFS.read(FlowerPot.path_to_self().."config.lua"), '=[FlowerPot-CONFIG "default"]')()
