@@ -148,14 +148,22 @@ end
 
 function FlowerPot.update_record(card_key, record_key, value)
     local card_progress = G.PROFILES[G.SETTINGS.profile].joker_usage[card_key]
-    if card_progress then
-        card_progress.records = card_progress.records or {}
-        if not card_progress.records[record_key] or card_progress.records[record_key] < value then
-            card_progress.records[record_key] = to_number(value)
-        end
-    else
+    if not card_progress then
         G.PROFILES[G.SETTINGS.profile].joker_usage[card_key] = {count = 0, order = G.P_CENTERS[card_key].order, wins = {}, losses = {}, wins_by_key = {}, losses_by_key = {}, records = {}}
-        G.PROFILES[G.SETTINGS.profile].joker_usage[card_key].records[record_key] = to_number(value)
+        card_progress = G.PROFILES[G.SETTINGS.profile].joker_usage[card_key]
+    end
+    card_progress.records = card_progress.records or {}
+    if not card_progress.records[record_key] or card_progress.records[record_key] < to_big(value) then
+        card_progress.records[record_key] = value
+    end
+
+    if type(card_progress.records[record_key]) == 'table' then
+        if card_progress.records[record_key] > to_big(1e300) then
+            card_progress.records[record_key] = to_big(1e300)
+        elseif card_progress.records[record_key] < to_big(-1e300) then
+            card_progress.records[record_key] = to_big(-1e300)
+        end
+        card_progress.records[record_key] = card_progress.records[record_key]:to_number(value)
     end
 end
 

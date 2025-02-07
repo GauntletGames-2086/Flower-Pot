@@ -65,13 +65,22 @@ function level_up_hand(card, hand, instant, amount)
     if G.PROFILES[G.SETTINGS.profile].hand_usage[poker_hand_label] == nil then
         G.PROFILES[G.SETTINGS.profile].hand_usage[poker_hand_label] = {count = 0, order = poker_hand_label, level = 1}
     end
-    if not G.PROFILES[G.SETTINGS.profile].hand_usage[poker_hand_label].level then
-        G.PROFILES[G.SETTINGS.profile].hand_usage[poker_hand_label].level = 1
+    local hand_to_level = G.PROFILES[G.SETTINGS.profile].hand_usage[poker_hand_label]
+    if not hand_to_level.level then
+        hand_to_level.level = 1
     end
     local function is_inf(x) return x ~= x end
     if G.GAME.hands[hand].level ~= math.huge and is_inf(G.GAME.hands[hand].level) == false then --don't save numbers that are NaN or naneinf
-        if to_number(G.PROFILES[G.SETTINGS.profile].hand_usage[poker_hand_label].level) < to_number(G.GAME.hands[hand].level) then 
-            G.PROFILES[G.SETTINGS.profile].hand_usage[poker_hand_label].level = to_number(G.GAME.hands[hand].level)
+        if hand_to_level.level < to_big(G.GAME.hands[hand].level) then 
+            hand_to_level.level = G.GAME.hands[hand].level
+            if type(hand_to_level.level) == 'table' then
+                if hand_to_level.level > to_big(1e300) then
+                    hand_to_level.level = to_big(1e300)
+                elseif hand_to_level.level < to_big(-1e300) then
+                    hand_to_level.level = to_big(-1e300)
+                end
+                hand_to_level.level = hand_to_level.level:to_number(value)
+            end
         end
     end
     G:save_settings()
