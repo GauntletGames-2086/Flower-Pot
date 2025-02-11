@@ -70,7 +70,7 @@ function level_up_hand(card, hand, instant, amount)
         hand_to_level.level = 1
     end
     local function is_inf(x) return x ~= x end
-    if G.GAME.hands[hand].level ~= math.huge and is_inf(G.GAME.hands[hand].level) == false then --don't save numbers that are NaN or naneinf
+    if to_big(G.GAME.hands[hand].level) ~= to_big(math.huge) and is_inf(to_big(G.GAME.hands[hand].level)) == false then --don't save numbers that are NaN or naneinf
         if to_big(hand_to_level.level) < to_big(G.GAME.hands[hand].level) then 
             hand_to_level.level = G.GAME.hands[hand].level
             if type(hand_to_level.level) == 'table' then
