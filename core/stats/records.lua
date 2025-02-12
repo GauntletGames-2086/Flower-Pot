@@ -153,7 +153,7 @@ function FlowerPot.update_record(card_key, record_key, value)
         card_progress = G.PROFILES[G.SETTINGS.profile].joker_usage[card_key]
     end
     card_progress.records = card_progress.records or {}
-    if not card_progress.records[record_key] or card_progress.records[record_key] < to_big(value) then
+    if not card_progress.records[record_key] or to_big(card_progress.records[record_key]) < to_big(value) then
         card_progress.records[record_key] = value
     end
 
@@ -173,7 +173,7 @@ function Card:calculate_joker(context)
     if FlowerPot.rev_lookup_records[self.config.center.key] then
         local value = FlowerPot.rev_lookup_records[self.config.center.key]:check_record(self)
         local function is_inf(x) return x ~= x end
-        if value and to_number(value) ~= math.huge and is_inf(to_number(value)) == false then
+        if value and to_big(value) ~= math.huge and is_inf(to_big(value)) == false then
             FlowerPot.update_record(self.config.center.key, FlowerPot.rev_lookup_records[self.config.center.key].key, value)
         end
     end
