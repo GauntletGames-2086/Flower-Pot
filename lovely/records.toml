@@ -12,10 +12,13 @@ payload = '''
 if FlowerPot.rev_lookup_records[_c.key] and FlowerPot.CONFIG.stat_tooltips_enabled then
     local card_progress = G.PROFILES[G.SETTINGS.profile].joker_usage[_c.key] or {}
     
-    local value = FlowerPot.rev_lookup_records[card.config.center.key]:check_record(card)
-    local function is_inf(x) return x ~= x end
-    if value and to_big(value) ~= math.huge and is_inf(to_big(value)) == false then
-        FlowerPot.update_record(card.config.center.key, FlowerPot.rev_lookup_records[card.config.center.key].key, value)
+    -- Only really matters for SMODS
+    if card then
+        local value = FlowerPot.rev_lookup_records[_c.key]:check_record(card)
+        local function is_inf(x) return x ~= x end
+        if value and to_big(value) ~= math.huge and is_inf(to_big(value)) == false then
+            FlowerPot.update_record(_c.key, FlowerPot.rev_lookup_records[_c.key].key, value)
+        end
     end
 
     FlowerPot.rev_lookup_records[_c.key]:add_tooltips(info_queue, card_progress, card)
