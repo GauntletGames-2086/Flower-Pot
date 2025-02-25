@@ -22,9 +22,9 @@ local mod_compat_keys = {
 
 for k, v in pairs(mod_compat_keys) do
     if SMODS.Mods[k] and SMODS.Mods[k].can_load then
-        local loaded, err = load(FP_NFS.read(FlowerPot.path_to_self()..v), ('=[FlowerPot-COMPAT _ "%s"]'):format(path))()
+        local loaded, err = load(FP_NFS.read(FlowerPot.path_to_self()..v), ('=[FlowerPot-COMPAT _ "%s"]'):format(v))()
         if err then
-            sendErrorMessage(('=[FlowerPot-COMPAT _ "%s"] Failed to load: '):format(path)..err)
+            sendErrorMessage(('=[FlowerPot-COMPAT _ "%s"] Failed to load: '):format(v)..err)
         end
     end
 end

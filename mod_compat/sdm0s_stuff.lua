@@ -41,5 +41,5 @@ FlowerPot.rev_lookup_records["j_sdm_property_damage"].check_record = function(se
 end
 FlowerPot.rev_lookup_records["j_sdm_joker_voucher"] = copy_table(FlowerPot.records["highest_xmult"])
 FlowerPot.rev_lookup_records["j_sdm_joker_voucher"].check_record = function(self, card)
-    return 1 + (#G.vouchers.cards or 0) * card.ability.extra.Xmult_mod
+    return 1 + (G.vouchers and #G.vouchers.cards or 0) * card.ability.extra.Xmult_mod
 end
