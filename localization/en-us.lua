@@ -22,7 +22,6 @@ return {
             b_flowpot_tooltip_settings = "Display Stat Tooltips",
             b_flowpot_voucher_sticker_setting = "Display Voucher Sticker/Tooltip",
             b_flowpot_voucher_sticker_options = {
-                "Shop + Collections",
                 "Run + Collections",
                 "Collections",
                 "Never"
