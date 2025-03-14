@@ -86,10 +86,25 @@ function FlowerPot.config_tab()
 					ref_table = FlowerPot.CONFIG,
 					ref_value = "stat_tooltips_enabled",
 				}),
+                create_option_cycle({
+                    label = localize('b_flowpot_voucher_sticker_setting'),
+                    scale = 0.8,
+                    options = localize('b_flowpot_voucher_sticker_options'),
+                    opt_callback = 'flowpot_voucher_sticker_settings',
+                    current_option = FlowerPot.CONFIG.voucher_sticker_enabled,
+                    w = 5
+                }),
                 UIBox_button({label = {localize("b_flowpot_create_profile_stats")}, button = "create_profile_stat_files", colour = G.C.ORANGE, minw = 5, minh = 0.7, scale = 0.6}),
 			}},
         },
     }
+end
+
+G.FUNCS.flowpot_voucher_sticker_settings = function(args)
+    FlowerPot.CONFIG.voucher_sticker_enabled = args.to_key
+    if SMODS and SMODS.can_load then
+        SMODS.save_mod_config(SMODS.Mods["FlowerPot"])
+    end
 end
 
 local GFUNCS_options = G.FUNCS.options

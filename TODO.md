@@ -8,6 +8,13 @@
         - [x] Voucher stake wins
         - [x] Poker hand highest levels
         - Add more here (there's gotta be more stats to track)
+    - [] Deck Stats
+        - [] "Deck Stats" tab w/ basic stats
+        - [] Individual Deck selector (see Galdur)
+        - [] Additional Deck stat tracking
+    - [] Blind Stats
+        - [] Blind stats tracking (e.x. defeats, losses)
+        - [] "Blind Stats" tab
 - Stats UI overhaul
     - Overall
     - Card Usage stats
@@ -24,4 +31,3 @@
         - Displays stats for specific object attributed to records (e.x. scaling jokers would have "Highest Chips/Mult/XMult")
         - [x] Initial
         - [x] API for custom records
-        - [ ] Special records (e.x. Space Joker trigger counts)

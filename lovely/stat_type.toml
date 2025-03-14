@@ -10,7 +10,7 @@ target = "card.lua"
 pattern = '''if self.ability.set == 'Joker' and not self.sticker_run then'''
 position = "before"
 payload = '''
-if self.ability.set == "Voucher" and not self.sticker_run then
+if self.ability.set == "Voucher" and not self.sticker_run and FlowerPot.CONFIG.voucher_sticker_enabled == 1 then
     self.sticker_run = get_voucher_win_sticker(self.config.center) or 'NONE'
 end'''
 match_indent = true
@@ -20,7 +20,6 @@ match_indent = true
 target = "functions/state_events.lua"
 pattern = '''set_joker_win()'''
 position = "after"
-payload = '''set_voucher_win()'''
 match_indent = true
 
 [[patches]]
@@ -43,7 +42,15 @@ match_indent = true
 target = "functions/UI_definitions.lua"
 pattern = '''card.ability.order = i+(j-1)*4'''
 position = "after"
-payload = '''card.sticker = get_voucher_win_sticker(center)'''
+payload = '''if FlowerPot.CONFIG.voucher_sticker_enabled < 3 then card.sticker = get_voucher_win_sticker(center) end'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/ui.lua"]'''
+pattern = '''card.ability.order = i+(j-1)*4'''
+position = "after"
+payload = '''if FlowerPot.CONFIG.voucher_sticker_enabled < 3 then card.sticker = get_voucher_win_sticker(center) end'''
 match_indent = true
 
 # This patch is so bad but forced if I don't want to override the whole function
@@ -52,7 +59,7 @@ match_indent = true
 target = "functions/button_callbacks.lua"
 pattern = '''(?<indent>[\t ]*)voucher_pool\[i\+\(j-1\)\*4 \+ \(8\*\(args\.cycle_config\.current_option - 1\)\)\]\n[\s\S]{6}if not center then break end\n[\s\S]{6}local card = Card\(G\.your_collection\[j\]\.T\.x \+ G\.your_collection\[j\]\.T\.w\/2, G\.your_collection\[j\]\.T\.y, G\.CARD_W, G\.CARD_H, G\.P_CARDS\.empty, center\)'''
 position = "after"
-payload = '''card.sticker = get_voucher_win_sticker(center)'''
+payload = '''if FlowerPot.CONFIG.voucher_sticker_enabled < 3 then card.sticker = get_voucher_win_sticker(center) end'''
 
 # Same patch as above but works for non-SMODS
 [[patches]]
@@ -60,4 +67,4 @@ payload = '''card.sticker = get_voucher_win_sticker(center)'''
 target = "functions/button_callbacks.lua"
 pattern = '''local center = G\.P_CENTER_POOLS\["Voucher"\]\[i\+\(j-1\)\*4 \+ \(8\*\(args\.cycle_config\.current_option - 1\)\)\]\n[\s\S]{6}if not center then break end\n[\s\S]{6}local card = Card\(G\.your_collection\[j\]\.T\.x \+ G\.your_collection\[j\]\.T\.w\/2, G\.your_collection\[j\]\.T\.y, G\.CARD_W, G\.CARD_H, G\.P_CARDS\.empty, center\)'''
 position = "after"
-payload = '''card.sticker = get_voucher_win_sticker(center)'''
+payload = '''if FlowerPot.CONFIG.voucher_sticker_enabled < 3 then card.sticker = get_voucher_win_sticker(center) end'''

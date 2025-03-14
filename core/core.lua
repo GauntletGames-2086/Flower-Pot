@@ -7,6 +7,7 @@ FlowerPot = {
     GLOBAL = {},
     CONFIG = {
         ["stat_tooltips_enabled"] = true,
+        ["voucher_sticker_enabled"] = 1,
     },
     path_to_self = function()
         for k, v in pairs(FP_NFS.getDirectoryItems(FP_lovely.mod_dir)) do

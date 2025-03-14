@@ -20,6 +20,12 @@ return {
             b_flowpot_highest_lvl = "Highest lvl:",
             b_flowpot_total_played = "Total Played:",
             b_flowpot_tooltip_settings = "Display Stat Tooltips",
+            b_flowpot_voucher_sticker_setting = "Display Voucher Sticker/Tooltip",
+            b_flowpot_voucher_sticker_options = {
+                "Shop + Collections",
+                "Collections",
+                "Never"
+            }
         },
     },
     descriptions = {

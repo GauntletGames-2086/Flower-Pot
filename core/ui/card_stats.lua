@@ -91,7 +91,7 @@ function buildCardStats_histogram(args)
                 {n=G.UIT.B, config={w = 0.2, h = 0.2, r = 0.1, colour = histogram_colour}},
                 {n=G.UIT.T, config={text = localize(FlowerPot.stat_types[stat_type].display_txt.full), scale = 0.35, colour = G.C.WHITE}}
             }},
-            {n=G.UIT.R, config={align = "cm", colour = G.C.BLACK, r = 0.1, minh = 0.5*G.CARD_H*5, minw = 0.5*G.CARD_H*3, padding = 0.1}, nodes={
+            {n=G.UIT.R, config={align = "cm", colour = lighten(G.C.BLACK, 0.05), r = 0.1, minh = 0.5*G.CARD_H*5, minw = 0.5*G.CARD_H*3, padding = 0.1}, nodes={
                 {n=G.UIT.C, config={align = "cm", padding = 0.1}, nodes=histograms[1]},
                 {n=G.UIT.C, config={align = "cm", padding = 0.1}, nodes=histograms[2]},
             }},
@@ -116,17 +116,17 @@ function create_UIBox_histogram(center, stats, max_amt)
     return {n=G.UIT.R, config={align = "cm",minw = 3}, nodes={
         {n=G.UIT.R, config={align = "cm", r = 0.1}, nodes={
             {n=G.UIT.C, config={align = "cm"}, nodes={
-                {n=G.UIT.C, config={align = "cm", minw = 0.5*G.CARD_W} , nodes={
+                {n=G.UIT.R, config={align = "cm", minw = 0.5*G.CARD_W} , nodes={
                     {n=G.UIT.O, config={object = cardarea}}
                 }},
-                {n=G.UIT.C, config={align = "cm", padding = 0.05}, nodes={
+                {n=G.UIT.R, config={align = "cm", padding = 0.05}, nodes={
                     {n=G.UIT.T, config={text = stats.count, scale = 0.35, colour = mix_colours(G.C.FILTER, G.C.WHITE, 0.8), shadow = true}}
                 }},
             }},
             {n=G.UIT.C, config={align = "cm", padding = 0.03}, nodes={
-                {n=G.UIT.C, config={align = "cm"}, nodes={
+                {n=G.UIT.R, config={align = "cm"}, nodes={
                     {n=G.UIT.C, config={align = "cm", minw = 2*(stats.count/max_amt), minh = 0.7, colour = G.C.SECONDARY_SET[center.set] or G.C.RED, res = 0.1, r = 0.003}, nodes={}},
-                    {n=G.UIT.C, config={align = "cm", minw = 2-(2*(stats.count/max_amt)), minh = 0.7, colour = G.C.UI.TRANSPARENT_DARK}, res = 0.1, r = 0.003, nodes={}},
+                    {n=G.UIT.C, config={align = "cm", minw = 2-(2*(stats.count/max_amt)), minh = 0.7, colour = darken(G.C.UI.TRANSPARENT_DARK, 0.1)}, res = 0.1, r = 0.003, nodes={}},
                 }},
             }},
         }},
