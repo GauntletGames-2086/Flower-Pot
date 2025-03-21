@@ -20,7 +20,9 @@ match_indent = true
 target = "functions/state_events.lua"
 pattern = '''set_joker_win()'''
 position = "after"
-payload = '''set_voucher_win()'''
+payload = '''
+set_voucher_win()
+set_deck_rounds()'''
 match_indent = true
 
 [[patches]]

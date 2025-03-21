@@ -1,4 +1,7 @@
 function create_UIBox_high_scores()
+    G.GAME.viewed_back = nil
+    FlowerPot.GLOBAL.IN_DECK_STATS = nil
+    
     fetch_achievements()
     set_profile_progress()
     set_discover_tallies()
@@ -23,6 +26,7 @@ function create_UIBox_high_scores()
                 create_progress_box(),
                 UIBox_button({button = 'usage', label = {localize('k_card_stats')}, minw = 7.5, minh = 0.75, focus_args = {nav = 'wide'}}),
                 UIBox_button({button = 'poker_hand_stats', label = {localize('b_flowpot_poker_hand_stats')}, minw = 7.5, minh = 0.75, focus_args = {nav = 'wide'}}),
+                UIBox_button({button = 'deck_stats', label = {localize('b_flowpot_deck_stats')}, minw = 7.5, minh = 0.75, focus_args = {nav = 'wide'}}),
             }},
             not G.F_NO_ACHIEVEMENTS and {n=G.UIT.C, config={align = "cm", r = 0.1, colour = G.C.CLEAR}, nodes=cheevs} or nil
         }}

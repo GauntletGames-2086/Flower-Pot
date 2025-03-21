@@ -23,6 +23,20 @@ payload = '''
         if G.ACTIVE_FLOWPOT_UI then
             G.FUNCS.exit_mods()
         end
+        FLowerPot.GLOBAL.IN_DECK_STATS = nil
+        FlowerPot.GLOBAL.LAST_DECK_STAT_PAGE = nil
     end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = 'function desc_from_rows(desc_nodes, empty, maxw)'
+position = "after"
+payload = '''
+if FlowerPot.GLOBAL.IN_DECK_STATS and empty then
+    empty = nil
+end
 '''
 match_indent = true

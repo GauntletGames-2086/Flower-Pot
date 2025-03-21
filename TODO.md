@@ -8,10 +8,10 @@
         - [x] Voucher stake wins
         - [x] Poker hand highest levels
         - Add more here (there's gotta be more stats to track)
-    - [] Deck Stats
-        - [] "Deck Stats" tab w/ basic stats
-        - [] Individual Deck selector (see Galdur)
-        - [] Additional Deck stat tracking
+    - [x] Deck Stats
+        - [x] "Deck Stats" tab w/ basic stats
+        - [x] Individual Deck selector (see Galdur)
+        - [x] Additional Deck stat tracking
     - [] Blind Stats
         - [] Blind stats tracking (e.x. defeats, losses)
         - [] "Blind Stats" tab

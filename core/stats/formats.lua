@@ -20,6 +20,7 @@ FlowerPot.addFormat({
         assert(FP_NFS.write(file_type_path..stat_group.file_name..".csv", csv_data))
     end,
 })
+
 FlowerPot.addFormat({
     key = "JSON",
     write_file = function(self, data_table, stat_group, file_type_path)
@@ -56,7 +57,7 @@ function FlowerPot.create_profile_folders(profile_name)
     for k, v in pairs(FlowerPot.formats) do
         local path_to_format = path_to_profile..k.."/"
         FP_NFS.createDirectory(path_to_format)
-    
+
         for kk, vv in pairs(FlowerPot.stat_groups) do
             FP_NFS.createDirectory(FlowerPot.get_stat_group_dir(vv, path_to_format))
         end
@@ -103,7 +104,7 @@ function FlowerPot.check_format_compat(stat_group, format)
 end
 
 function FlowerPot.data_to_csv(str_array, delim)
-    assert(type(str_array) == "table", "Flower Pot: Passing non-table as \"str_array\" in \"data_to_csv\" function")
+    assert(type(str_array) == "table", "Flower Pot: Cannot convert \"str_array\", not a table")
     local final_str = ""
     for _, v in ipairs(str_array) do
         if type(v) == "string" or type(v) == "number" then final_str = final_str..tostring(v)..delim end

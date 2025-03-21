@@ -4,6 +4,8 @@ return {
             b_flowpot_config = "Flower Pot Settings",
             b_flowpot_create_profile_stats = "Create Profile Stat Files",
             b_flowpot_poker_hand_stats = "Poker Hand Stats",
+            b_flowpot_deck_stats = "Deck Stats",
+            b_flowpot_deck_records = "Deck Records",
             b_flowpot_stat_types = "Stat Types",
             b_flowpot_consumable_types = "Card Types",
             b_flowpot_mods = "Mods",
@@ -19,14 +21,22 @@ return {
             b_flowpot_all_types = "All Types",
             b_flowpot_highest_lvl = "Highest lvl:",
             b_flowpot_total_played = "Total Played:",
+            b_flowpot_total_wins_losses = "Total Wins/Losses:",
+            b_flowpot_fastest_run = "Fastest Win:",
+            b_flowpot_highest_score = "Highest Score:",
             b_flowpot_tooltip_settings = "Display Stat Tooltips",
             b_flowpot_voucher_sticker_setting = "Display Voucher Sticker/Tooltip",
+            b_flowpot_per_deck_joker = "Gold Stake Wins (Joker)",
+            b_flowpot_per_deck_voucher = "Gold Stake Wins (Voucher)",
             b_flowpot_voucher_sticker_options = {
                 "Run + Collections",
                 "Collections",
                 "Never"
             }
         },
+        v_dictionary = {
+            b_flowpot_num_rounds = "#1# Rounds",
+        }
     },
     descriptions = {
         Other = {

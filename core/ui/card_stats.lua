@@ -82,7 +82,7 @@ function buildCardStats_histogram(args)
 
     local histogram_options = {}
     for i = 1, math.ceil(#used_cards/8) do
-            table.insert(histogram_options, localize('k_page')..' '..tostring(i)..'/'..tostring(math.ceil(#used_cards/8)))
+        table.insert(histogram_options, localize('k_page')..' '..tostring(i)..'/'..tostring(math.ceil(#used_cards/8)))
     end
 
     return {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={

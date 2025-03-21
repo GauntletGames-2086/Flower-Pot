@@ -1,7 +1,7 @@
 {
     "name": "Flower Pot",
     "id": "FlowerPot",
-    "version": "0.7.25",
+    "version": "0.8",
     "description": "Utility + QoL mod, aimed at improved stat display and collection.",
     "prefix": "flowpot",
     "author": ["ItsFlowwey"],

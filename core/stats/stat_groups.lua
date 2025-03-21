@@ -37,10 +37,15 @@ for i, v in ipairs({
                         card_table["name"] = localize{type = 'name_text', key = k, set = self.stat_set}
                         -- Reconstruct wins as total_wins to not crash from saving as JSON
                         card_table.total_wins = 0
+                        card_table.total_losses = 0
 
                         if SMODS and SMODS.can_load then
                             for _, vvv in pairs(card_table.wins_by_key or {}) do
                                 card_table.total_wins = card_table.total_wins + vvv
+                            end
+
+                            for _, vvv in pairs(card_table.losses_by_key or {}) do
+                                card_table.total_losses = card_table.total_losses + vvv
                             end
                         else
                             for _, vvv in ipairs(card_table.wins or {}) do
@@ -48,6 +53,13 @@ for i, v in ipairs({
                             end
                             for _, vvv in pairs(card_table.wins or {}) do
                                 card_table.total_wins = card_table.total_wins + vvv
+                            end
+
+                            for _, vvv in ipairs(card_table.losses or {}) do
+                                card_table.total_losses = card_table.total_losses + vvv
+                            end
+                            for _, vvv in pairs(card_table.losses or {}) do
+                                card_table.total_losses = card_table.total_losses + vvv
                             end
                         end
 
@@ -69,12 +81,14 @@ for i, v in ipairs({
                 titles = {
                     v.set, 
                     (v.profile_key) and "Times Used" or (v.set == "Voucher" and "Time Bought") or "Total Rounds", 
-                    (v.set == "Joker" or v.set == "Voucher") and "Total Wins"
+                    (v.set == "Joker" or v.set == "Voucher") and "Total Wins",
+                    (v.set == "Joker" or v.set == "Voucher") and "Total Losses",
                 },
                 data_order = {
                     "name", 
                     "count", 
                     (v.set == "Joker" or v.set == "Voucher") and "total_wins",
+                    (v.set == "Joker" or v.set == "Voucher") and "total_losses",
                 },
             }
         }
@@ -109,6 +123,7 @@ FlowerPot.addStatGroup({
         }
     }
 })
+
 FlowerPot.addStatGroup({
     key = "poker_hands",
     folder_dir = {"Poker Hands"},
@@ -135,6 +150,71 @@ FlowerPot.addStatGroup({
     }
 })
 
+FlowerPot.addStatGroup({
+    key = "decks",
+    folder_dir = {"Decks"},
+    file_name = "decks",
+    create_data_table = function(self, format)
+        local deck_stats = copy_table(G.PROFILES[G.SETTINGS.profile].deck_usage)
+
+        if next(deck_stats) then
+            local data_table = {}
+
+            for k, v in pairs(deck_stats) do
+
+                local card_table = v
+                card_table.total_wins = 0
+                card_table.total_losses = 0
+                if G.P_CENTERS[k] then
+                    if SMODS and SMODS.can_load then
+                        for _, vvv in pairs(card_table.wins_by_key or {}) do
+                            card_table.total_wins = card_table.total_wins + vvv
+                        end
+                    else
+                        for _, vvv in ipairs(card_table.wins or {}) do
+                            card_table.total_wins = card_table.total_wins + vvv
+                        end
+                        for _, vvv in pairs(card_table.wins or {}) do
+                            card_table.total_wins = card_table.total_wins + vvv
+                        end
+                    end
+
+                    if SMODS and SMODS.can_load then
+                        for _, vvv in pairs(card_table.losses_by_key or {}) do
+                            card_table.total_losses = card_table.total_losses + vvv
+                        end
+                    else
+                        for _, vvv in ipairs(card_table.losses or {}) do
+                            card_table.total_losses = card_table.total_losses + vvv
+                        end
+                        for _, vvv in pairs(card_table.losses or {}) do
+                            card_table.total_losses = card_table.total_losses + vvv
+                        end
+                    end
+
+                    data_table[#data_table+1] = {
+                        key = k,
+                        order = card_table.order,
+                        name = localize{type = 'name_text', key = k, set = "Back"},
+                        total_wins = card_table.total_wins,
+                        total_losses = card_table.total_losses,
+                        lowest_round_win = card_table.records and card_table.records.lowest_round_win or "N/A"
+                    }
+                end
+            end
+            table.sort(data_table, function (a, b) return a.order > b.order end )
+        
+            return data_table
+        end
+    end,
+    compat = {
+        CSV = {
+            titles = {"Back", "Total Wins", "Total Losses", "Lowest Round Win"},
+            data_order = {"name", "total_wins", "total_losses", "lowest_round_win"},
+        }
+    }
+})
+
 -- Stat Types
 FlowerPot.addStatType({
     key = "round_wins",
@@ -147,6 +227,7 @@ FlowerPot.addStatType({
         return {key = stat_group_info.key, count = stat_group_info.count}
     end,
 })
+
 FlowerPot.addStatType({
     key = "times_redeemed",
     display_txt = {
@@ -158,6 +239,7 @@ FlowerPot.addStatType({
         return {key = stat_group_info.key, count = stat_group_info.count}
     end,
 })
+
 FlowerPot.addStatType({
     key = "stake_wins",
     display_txt = {

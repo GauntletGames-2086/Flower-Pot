@@ -3,7 +3,7 @@ FP_NFS = require("FP_nativefs")
 FP_JSON = require("FP_json")
 
 FlowerPot = {
-    VERSION = "0.7.25",
+    VERSION = "0.8",
     GLOBAL = {},
     CONFIG = {
         ["stat_tooltips_enabled"] = true,
