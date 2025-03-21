@@ -11,7 +11,7 @@ pattern = '''boot_timer('prep stage', 'splash prep',1)'''
 position = "before"
 payload = '''
 if SMODS and SMODS.ConsumableTypes then 
-	for i, v in ipairs(SMODS.ConsumableType.obj_buffer) do
+	for i, v in ipairs(SMODS.ConsumableType.ctype_buffer) do
 		if not FlowerPot.stat_groups[(v):lower():gsub("%s+", "_").."_usage"] then
 			FlowerPot.stat_types["times_used"].valid_stat_groups[(v):lower():gsub("%s+", "_").."_usage"] = true
 			FlowerPot.addStatGroup({
