@@ -23,7 +23,7 @@ payload = '''
         if G.ACTIVE_FLOWPOT_UI then
             G.FUNCS.exit_mods()
         end
-        FLowerPot.GLOBAL.IN_DECK_STATS = nil
+        FlowerPot.GLOBAL.IN_DECK_STATS = nil
         FlowerPot.GLOBAL.LAST_DECK_STAT_PAGE = nil
     end
 '''
