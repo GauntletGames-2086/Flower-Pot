@@ -1,9 +1,9 @@
 local FP_lovely = require("lovely")
 FP_NFS = require("FP_nativefs") ---@module "nativefs"
-FP_JSON = require("FP_json") ---@module "lovely"
+FP_JSON = require("FP_json") ---@module "json"
 
 FlowerPot = {
-    VERSION = "0.8",
+    VERSION = "0.8.1",
     GLOBAL = {},
     CONFIG = {
         ["stat_tooltips_enabled"] = true,
