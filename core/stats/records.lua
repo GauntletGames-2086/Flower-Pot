@@ -14,7 +14,7 @@ FlowerPot.addRecord({
         info_queue[#info_queue+1] = {key = 'record_highest_chips', set = 'Other', vars = {to_number((card_progress.records and card_progress.records.highest_chips) or self.default)}}
     end,
     check_record = function(self, card)
-        return card.ability.extra.chips
+        return (card.ability.extra or {}).chips
     end
 })
 FlowerPot.addRecord({
@@ -87,7 +87,7 @@ FlowerPot.addRecord({
         info_queue[#info_queue+1] = {key = 'record_highest_dollar', set = 'Other', vars = {to_number((card_progress.records and card_progress.records.highest_dollar) or self.default)}}
     end,
     check_record = function(self, card)
-        return card.ability.extra.dollars
+        return (card.ability.extra or {}).dollars
     end
 })
 FlowerPot.addRecord({
